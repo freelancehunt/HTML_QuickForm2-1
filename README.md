@@ -1,8 +1,8 @@
 # HTML_QuickForm2
 
-[![Build Status](https://travis-ci.org/pear/HTML_QuickForm2.svg?branch=trunk)](https://travis-ci.org/pear/HTML_QuickForm2)
+[![Build Status](https://travis-ci.com/freelancehunt/HTML_QuickForm2.svg?branch=trunk)](https://travis-ci.com/freelancehunt/HTML_QuickForm2)
 
-This is a repository for [PEAR HTML_QuickForm2] package that has been migrated from [PEAR SVN].
+This is fork of [pear/HTML_QuickForm2] with additional changes for our needs, so it doesn't work for everyone.
 
 HTML_QuickForm2 provides methods to create, validate and render HTML forms. It is a PHP5 rewrite of [PEAR HTML_QuickForm]
 and related packages.
@@ -23,8 +23,7 @@ Please report issues via the [PEAR bug tracker] or [Github issues].
 
 Pull requests are welcome.
 
-[PEAR HTML_QuickForm2]: https://pear.php.net/package/HTML_QuickForm2/
-[PEAR SVN]: https://svn.php.net/repository/pear/packages/HTML_QuickForm2
+[pear/HTML_QuickForm2]: https://github.com/pear/HTML_QuickForm2/
 [PEAR HTML_QuickForm]: https://pear.php.net/package/HTML_QuickForm/
 [PEAR bug tracker]: https://pear.php.net/bugs/search.php?cmd=display&package_name[]=HTML_QuickForm2
 [Github issues]: https://github.com/pear/HTML_QuickForm2/issues
