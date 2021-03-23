@@ -1,6 +1,6 @@
 # HTML_QuickForm2
 
-[![Build Status](https://travis-ci.org/freelancehunt/HTML_QuickForm2.svg?branch=trunk)](https://travis-ci.org/freelancehunt/HTML_QuickForm2)
+[![Build Status](https://travis-ci.com/freelancehunt/HTML_QuickForm2/workflows/Continuous%20Integration/badge.svg?branch=trunk)](https://travis-ci.com/freelancehunt/HTML_QuickForm2/actions?query=branch%3Atrunk+workflow%3A%22Continuous+Integration%22)
 
 This is fork of [pear/HTML_QuickForm2] with additional changes for our needs, so it doesn't work for everyone.
 
