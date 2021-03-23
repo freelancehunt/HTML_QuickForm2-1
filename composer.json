@@ -1,5 +1,5 @@
 {
-    "name":        "pear/html_quickform2",
+    "name":        "freelancehunt/html_quickform2",
     "description": "Provides methods to create, validate and render HTML forms in PHP.",
     "type":        "library",
     "keywords":    ["forms", "validation", "javascript", "wizard", "pear", "quickform"],
@@ -26,6 +26,8 @@
     "require": {
         "php":                 ">=5.6.0",
         "pear/pear_exception": "^1.0",
+        "ext-mbstring":        "*",
+        "ext-gettext":         "*"
         "pear/html_common2":   "^2.3.1"
     },
     "require-dev": {

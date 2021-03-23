@@ -186,8 +186,9 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
     public function buildCommonFields(HTML_QuickForm2_Node $element)
     {
         $ary = [
-            'id'     => (string)$element->getId(),
-            'frozen' => $element->toggleFrozen()
+            'id'                 => (string) $element->getId(),
+            'frozen'             => $element->toggleFrozen(),
+            'element-attributes' => $element->getAttributes(),
         ];
         if (isset($this->styles[$ary['id']])) {
             $ary['style'] = $this->styles[$ary['id']];
@@ -210,6 +211,9 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
             $this->array['errors'][$ary['id']] = $error;
         } elseif ($error) {
             $ary['error'] = $error;
+        }
+        if (isset($this->styles[$ary['id']])) {
+            $ary['style'] = $this->styles[$ary['id']];
         }
         return $ary;
     }
