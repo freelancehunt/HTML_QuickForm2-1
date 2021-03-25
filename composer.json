@@ -27,8 +27,7 @@
         "php":                 ">=5.4.0",
         "pear/pear_exception": "^1.0",
         "pear/html_common2":   "^2.1",
-        "ext-mbstring":        "*",
-        "ext-gettext":         "*"
+        "ext-mbstring":        "*"
     },
     "require-dev": {
         "phpunit/phpunit":     "^4.8|^5.7"
