@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2020 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -140,8 +140,8 @@ class HTML_QuickForm2_Element_Select_OptionContainer extends HTML_Common2
     public function __toString()
     {
         $indentLvl = $this->getIndentLevel();
-        $indent    = $this->getIndent() . self::getOption('indent');
-        $linebreak = self::getOption('linebreak');
+        $indent    = $this->getIndent() . self::getOption(self::OPTION_INDENT);
+        $linebreak = self::getOption(self::OPTION_LINEBREAK);
         $html      = '';
         $strValues = array_map('strval', $this->values);
         foreach ($this->options as $option) {

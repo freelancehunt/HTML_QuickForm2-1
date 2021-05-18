@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2020 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -290,9 +290,9 @@ class HTML_QuickForm2_JavascriptBuilder
     protected function wrapScript($js)
     {
         if ('' != $js) {
-            $cr         = HTML_Common2::getOption('linebreak');
+            $cr         = HTML_Common2::getOption(HTML_Common2::OPTION_LINEBREAK);
             $attributes = ' type="text/javascript"';
-            if (null !== ($nonce = HTML_Common2::getOption('nonce'))) {
+            if (null !== ($nonce = HTML_Common2::getOption(HTML_QuickForm2_Node::OPTION_NONCE))) {
                 $attributes .= ' nonce="' . $nonce . '"';
             }
             $js = "<script{$attributes}>{$cr}//<![CDATA[{$cr}"

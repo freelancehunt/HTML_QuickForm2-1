@@ -26,7 +26,7 @@
     "require": {
         "php":                 ">=5.4.0",
         "pear/pear_exception": "^1.0",
-        "pear/html_common2":   "^2.1",
+        "pear/html_common2":   "^2.2",
         "ext-mbstring":        "*"
     },
     "require-dev": {
@@ -35,6 +35,11 @@
     "autoload": {
         "psr-0": {
             "HTML_QuickForm2": ""
-        }
+        },
+        "exclude-from-classmap": ["docs/"]
+    },
+    "autoload-dev": {
+        "classmap": ["tests/"],
+        "exclude-from-classmap": ["tests/MockObjectGenerator.original.php", "tests/MockObjectGenerator.patched.php"]
     }
 }

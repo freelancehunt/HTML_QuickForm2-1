@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2020 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -190,7 +190,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
         $prefix = $this->getIndent();
         if ($comment = $this->getComment()) {
             $prefix .= '<!-- ' . $comment . ' -->'
-                       . HTML_Common2::getOption('linebreak') . $this->getIndent();
+                       . self::getOption(self::OPTION_LINEBREAK) . $this->getIndent();
         }
 
         if (!$this->tagName) {

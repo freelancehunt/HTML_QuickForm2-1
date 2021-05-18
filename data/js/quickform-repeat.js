@@ -1,9 +1,9 @@
 /**
  * HTML_QuickForm2: support functions for repeat elements
- * Package version 2.2.0
+ * Package version 2.2.1
  * https://pear.php.net/package/HTML_QuickForm2
  *
- * Copyright 2006-2020, Alexey Borzov, Bertrand Mansion
+ * Copyright 2006-2021, Alexey Borzov, Bertrand Mansion
  * Licensed under BSD 3-Clause License
  * https://opensource.org/licenses/BSD-3-Clause
  */

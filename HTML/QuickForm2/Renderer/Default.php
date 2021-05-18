@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2020 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -315,8 +315,8 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
             $this->prepareTemplate($this->findTemplate($container, '{content}'), $container)
         );
         $cHtml  = array_pop($this->html);
-        $break  = HTML_Common2::getOption('linebreak');
-        $indent = str_repeat(HTML_Common2::getOption('indent'), count($this->html));
+        $break  = HTML_Common2::getOption(HTML_Common2::OPTION_LINEBREAK);
+        $indent = str_repeat(HTML_Common2::getOption(HTML_Common2::OPTION_INDENT), count($this->html));
         $this->html[count($this->html) - 1][] = str_replace(
             '{content}', $break . $indent . implode($break . $indent, $cHtml), $cTpl
         );
@@ -401,7 +401,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
             );
         }
 
-        $break         = HTML_Common2::getOption('linebreak');
+        $break         = HTML_Common2::getOption(HTML_Common2::OPTION_LINEBREAK);
         $script        = $this->getJavascriptBuilder()->getFormJavascript($form->getId());
         $this->html[0] = [
             str_replace('{content}', $break . implode($break, $this->html[0]), $formTpl) .

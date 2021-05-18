@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2020 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -116,7 +116,7 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
             }
             $indent = $this->getIndent();
             return $indent . '<select' . $attrString . '>' .
-                   self::getOption('linebreak') .
+                   self::getOption(self::OPTION_LINEBREAK) .
                    $this->optionContainer->__toString() .
                    $indent . '</select>';
         }

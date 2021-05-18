@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2020 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -66,7 +66,7 @@ class HTML_QuickForm2_ElementTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        HTML_Common2::setOption('id_force_append_index', true);
+        HTML_Common2::setOption(HTML_QuickForm2_Node::OPTION_ID_FORCE_APPEND_INDEX, true);
     }
 
     public function testCanSetName()
@@ -204,7 +204,7 @@ class HTML_QuickForm2_ElementTest extends PHPUnit_Framework_TestCase
 
     public function testGenerateIdsWithoutIndexes()
     {
-        HTML_Common2::setOption('id_force_append_index', false);
+        HTML_Common2::setOption(HTML_QuickForm2_Node::OPTION_ID_FORCE_APPEND_INDEX, false);
 
         $name = 'foo_' . mt_rand(0, 1000);
         $el = new HTML_QuickForm2_ElementImpl($name);
@@ -216,7 +216,7 @@ class HTML_QuickForm2_ElementTest extends PHPUnit_Framework_TestCase
 
     public function testUniqueIdsGeneratedWithoutIndexes()
     {
-        HTML_Common2::setOption('id_force_append_index', false);
+        HTML_Common2::setOption(HTML_QuickForm2_Node::OPTION_ID_FORCE_APPEND_INDEX, false);
 
         $this->testUniqueIdsGenerated();
     }
