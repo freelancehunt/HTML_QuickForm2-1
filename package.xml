@@ -8,27 +8,27 @@
  <extends>HTML_QuickForm</extends>
  <summary>PHP5 rewrite of HTML_QuickForm package</summary>
  <description>
- PHP5 rewrite of HTML_QuickForm and HTML_QuickForm_Controller packages.
+  PHP5 rewrite of HTML_QuickForm and HTML_QuickForm_Controller packages.
 
- This package provides methods to create, validate and render HTML forms.
+  This package provides methods to create, validate and render HTML forms.
 
- Features:
-   * Supports all form elements defined by HTML standard, provides several
-     custom elements
-   * Server-side and client-side validation, several common rules provided
-   * Multipage forms (tabbed forms and wizards)
-   * Pluggable elements, rules, renderers and renderer plugins
+  Features:
+  * Supports all form elements defined by HTML standard, provides several
+  custom elements
+  * Server-side and client-side validation, several common rules provided
+  * Multipage forms (tabbed forms and wizards)
+  * Pluggable elements, rules, renderers and renderer plugins
 
- Major advantages over PHP4 version:
-   * Most of the package's functionality is covered by unit tests
-   * DOM-like API for building the form structure, new streamlined API for
-     elements' values handling
-   * Default rendering without tables (inspired by
-     HTML_QuickForm_Renderer_Tableless)
-   * Renderer plugins for elements with complex rendering needs
-   * Ability to chain validation rules with 'and' and 'or'
-   * Client-side validation can run &quot;live&quot; on changing the form fields,
-     validation errors are displayed near the fields instead of in alert()
+  Major advantages over PHP4 version:
+  * Most of the package's functionality is covered by unit tests
+  * DOM-like API for building the form structure, new streamlined API for
+  elements' values handling
+  * Default rendering without tables (inspired by
+  HTML_QuickForm_Renderer_Tableless)
+  * Renderer plugins for elements with complex rendering needs
+  * Ability to chain validation rules with 'and' and 'or'
+  * Client-side validation can run &quot;live&quot; on changing the form fields,
+  validation errors are displayed near the fields instead of in alert()
  </description>
  <lead>
   <name>Alexey Borzov</name>
@@ -53,12 +53,12 @@
  </stability>
  <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
  <notes>
- * Upgraded tests, PHPUnit Polyfills package is used to run them on PHP 5.6 to PHP 8.1
- * Test suite now runs on Github Actions rather than on Travis
- * The package runs under PHP 8.1 without E_DEPRECATED messages
-   https://github.com/pear/HTML_QuickForm2/issues/6
- * Use psalm for static analysis
- * Minimum required PHP version is now 5.6
+  * Upgraded tests, PHPUnit Polyfills package is used to run them on PHP 5.6 to PHP 8.1
+  * Test suite now runs on Github Actions rather than on Travis
+  * The package runs under PHP 8.1 without E_DEPRECATED messages
+  https://github.com/pear/HTML_QuickForm2/issues/6
+  * Use psalm for static analysis
+  * Minimum required PHP version is now 5.6
  </notes>
  <contents>
   <dir name="/">
@@ -558,51 +558,51 @@
     </file>
    </dir> <!-- /tests -->
    <dir name="docs">
-     <file name="LICENSE" role="doc" />
-     <dir name="examples">
-      <dir name="controller">
-       <file name="simple.php" role="doc">
-        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
-       </file>
-       <file name="tabbed.php" role="doc">
-        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
-       </file>
-       <file name="wizard.php" role="doc">
-        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
-       </file>
-      </dir> <!-- /docs/examples/controller -->
-      <dir name="js">
-       <file name="dualselect.js" role="doc" />
-       <file name="hierselect-server.php" role="doc" />
-      </dir> <!-- /docs/examples/js -->
-      <dir name="renderers">
-       <dir name="templates">
-        <file name="array-twig.tpl" role="doc" />
-       </dir> <!-- /docs/examples/renderers/templates -->
-       <file name="array-twig.php" role="doc">
-        <tasks:replace  from="@data_dir@" to="data_dir" type="pear-config" />
-       </file>
-      </dir> <!-- /docs/examples/renderers -->
-      <dir name="support">
-       <file name="hierselect-loader.php" role="doc" />
-      </dir> <!-- /docs/examples/support -->
-      <file role="doc" name="basic-elements.php">
+    <file name="LICENSE" role="doc" />
+    <dir name="examples">
+     <dir name="controller">
+      <file name="simple.php" role="doc">
        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
       </file>
-      <file role="doc" name="builtin-rules.php">
+      <file name="tabbed.php" role="doc">
        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
       </file>
-      <file role="doc" name="default-renderer.php" />
-      <file role="doc" name="dualselect.php">
+      <file name="wizard.php" role="doc">
        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
       </file>
-      <file name="hierselect-ajax.php" role="doc">
-       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </dir> <!-- /docs/examples/controller -->
+     <dir name="js">
+      <file name="dualselect.js" role="doc" />
+      <file name="hierselect-server.php" role="doc" />
+     </dir> <!-- /docs/examples/js -->
+     <dir name="renderers">
+      <dir name="templates">
+       <file name="array-twig.tpl" role="doc" />
+      </dir> <!-- /docs/examples/renderers/templates -->
+      <file name="array-twig.php" role="doc">
+       <tasks:replace  from="@data_dir@" to="data_dir" type="pear-config" />
       </file>
-      <file name="repeat.php" role="doc">
-       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
-      </file>
-     </dir> <!-- /docs/examples -->
+     </dir> <!-- /docs/examples/renderers -->
+     <dir name="support">
+      <file name="hierselect-loader.php" role="doc" />
+     </dir> <!-- /docs/examples/support -->
+     <file role="doc" name="basic-elements.php">
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
+     <file role="doc" name="builtin-rules.php">
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
+     <file role="doc" name="default-renderer.php" />
+     <file role="doc" name="dualselect.php">
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
+     <file name="hierselect-ajax.php" role="doc">
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
+     <file name="repeat.php" role="doc">
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
+    </dir> <!-- /docs/examples -->
    </dir>
    <dir name="data/js">
     <dir name="min">
@@ -759,8 +759,8 @@
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-* Incorrect option name used in HTML_QuickForm2_Element_Script::__toString()
-  Thanks to Julian Striegl (striegljulian at gmail dot com) for reporting
+    * Incorrect option name used in HTML_QuickForm2_Element_Script::__toString()
+    Thanks to Julian Striegl (striegljulian at gmail dot com) for reporting
    </notes>
   </release>
   <release>
@@ -775,12 +775,12 @@
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
- * Depend on newer HTML_Common2 that does not cause problems with optimized
-   composer autoloader, see https://github.com/pear/HTML_QuickForm2/issues/4
- * Consistently use HTML_Common2::OPTION_* constants for document-wide
-   option names, define and use additional HTML_QuickForm2_Node::OPTION_*
-   constants instead of directly using 'language', 'id_force_append_index'
-   and 'nonce' strings
+    * Depend on newer HTML_Common2 that does not cause problems with optimized
+    composer autoloader, see https://github.com/pear/HTML_QuickForm2/issues/4
+    * Consistently use HTML_Common2::OPTION_* constants for document-wide
+    option names, define and use additional HTML_QuickForm2_Node::OPTION_*
+    constants instead of directly using 'language', 'id_force_append_index'
+    and 'nonce' strings
    </notes>
   </release>
   <release>
@@ -795,12 +795,12 @@
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
- * Minimum required PHP version is now 5.4
- * Removed support for magic_quotes_gpc, as get_magic_quotes_gpc()
-   was deprecated in PHP 7.4 and the functionality itself was disabled
-   since PHP 5.4 (https://github.com/pear/HTML_QuickForm2/issues/3)
- * HTML_QuickForm2_Element_Date::setValue() will now accept an instance of
-   DateTimeInterface, not only DateTime
+    * Minimum required PHP version is now 5.4
+    * Removed support for magic_quotes_gpc, as get_magic_quotes_gpc()
+    was deprecated in PHP 7.4 and the functionality itself was disabled
+    since PHP 5.4 (https://github.com/pear/HTML_QuickForm2/issues/3)
+    * HTML_QuickForm2_Element_Date::setValue() will now accept an instance of
+    DateTimeInterface, not only DateTime
    </notes>
   </release>
   <release>
@@ -815,21 +815,21 @@
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
- * HTML_QuickForm2 runs under PHP 7.2+ without warnings / &quot;deprecated&quot;
-   messages
- * Tests run correctly on PHPUnit versions up to 5
- * It is possible to automatically add &quot;nonce&quot; attributes to inline
-   &lt;script&gt; tags, just call
-   HTML_Common2::setOption('nonce', $someNonceValue);
-   before outputting the form. This allows running HTML_QuickForm2 with
-   reasonable Content-Security-Policy
-* Bundled a separate LICENSE file instead of having it in each .php file
-  header. Updated phrasing and links to mention 3-Clause BSD license
-  the package actually uses.
+    * HTML_QuickForm2 runs under PHP 7.2+ without warnings / &quot;deprecated&quot;
+    messages
+    * Tests run correctly on PHPUnit versions up to 5
+    * It is possible to automatically add &quot;nonce&quot; attributes to inline
+    &lt;script&gt; tags, just call
+    HTML_Common2::setOption('nonce', $someNonceValue);
+    before outputting the form. This allows running HTML_QuickForm2 with
+    reasonable Content-Security-Policy
+    * Bundled a separate LICENSE file instead of having it in each .php file
+    header. Updated phrasing and links to mention 3-Clause BSD license
+    the package actually uses.
 
-When installing with composer, files no longer contain 'require_once' calls
-and 'include-path' option is not used. The package is now 100% autoloader
-compatible, all classes reside in separate files.
+    When installing with composer, files no longer contain 'require_once' calls
+    and 'include-path' option is not used. The package is now 100% autoloader
+    compatible, all classes reside in separate files.
    </notes>
   </release>
   <release>
@@ -844,8 +844,8 @@ compatible, all classes reside in separate files.
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Bug #20295 was incorrectly fixed for Static elements, this led to removing
-their contents when DataSources did not contain values for them.
+    Bug #20295 was incorrectly fixed for Static elements, this led to removing
+    their contents when DataSources did not contain values for them.
    </notes>
   </release>
   <release>
@@ -860,31 +860,31 @@ their contents when DataSources did not contain values for them.
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Bug fixes
- * When using HTML_QuickForm2_DataSource_Array and its descendants elements'
-   updateValue() implementations now differentiate between "no value available
-   for an element" and "explicit null value provided for an element"
-   (see bug #20295). Custom DataSources may implement the new
-   HTML_QuickForm2_DataSource_NullAware interface to achieve the same.
- * Contents of Static elements added to Repeat are no longer cleared (bug #19802)
- * Client-side rules for containers within Repeat are correctly removed when
-   removing a repeated item (bug #19803)
- * Client-side validator is always generated for a form with a Repeat having
-   some client-side rules on its child elements, even if Repeat is empty
- * Unit tests updated to work with newer PHPUnit, prevent running tests twice
-   under some circumstances (see bug #19038)
+    Bug fixes
+    * When using HTML_QuickForm2_DataSource_Array and its descendants elements'
+    updateValue() implementations now differentiate between "no value available
+    for an element" and "explicit null value provided for an element"
+    (see bug #20295). Custom DataSources may implement the new
+    HTML_QuickForm2_DataSource_NullAware interface to achieve the same.
+    * Contents of Static elements added to Repeat are no longer cleared (bug #19802)
+    * Client-side rules for containers within Repeat are correctly removed when
+    removing a repeated item (bug #19803)
+    * Client-side validator is always generated for a form with a Repeat having
+    some client-side rules on its child elements, even if Repeat is empty
+    * Unit tests updated to work with newer PHPUnit, prevent running tests twice
+    under some circumstances (see bug #19038)
 
-Other features and changes
- * Calling HTML_QuickForm2_Container_Group::setValue() will clear values of
-   those grouped elements that do not have a corresponding key in the passed
-   array. Passing a null or an empty array to setValue() will clear the values
-   of all grouped elements. Previous behaviour was counter-intuitive.
- * Added HTML_QuickForm2_Element_Select::getOptionContainer() (request #19955)
- * HTML_QuickForm2_Container_Group::setValue() properly handles a group of radio
-   elements (request #20103)
- * HTML_QuickForm2_Element_Date::setValue() can accept an instance of DateTime
- * Extracted removeErrorMessage() from removeRelatedErrors() of qf.Validator
-   for easier customizing of client-side errors output
+    Other features and changes
+    * Calling HTML_QuickForm2_Container_Group::setValue() will clear values of
+    those grouped elements that do not have a corresponding key in the passed
+    array. Passing a null or an empty array to setValue() will clear the values
+    of all grouped elements. Previous behaviour was counter-intuitive.
+    * Added HTML_QuickForm2_Element_Select::getOptionContainer() (request #19955)
+    * HTML_QuickForm2_Container_Group::setValue() properly handles a group of radio
+    elements (request #20103)
+    * HTML_QuickForm2_Element_Date::setValue() can accept an instance of DateTime
+    * Extracted removeErrorMessage() from removeRelatedErrors() of qf.Validator
+    for easier customizing of client-side errors output
    </notes>
   </release>
   <release>
@@ -899,11 +899,11 @@ Other features and changes
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-  * Leftover 'foo' no longer stays in grouped element's name when renaming group
+    * Leftover 'foo' no longer stays in grouped element's name when renaming group
     named 'foo[foo]' (bug #19477)
-  * 'classes' property of qf.Validator moved to its prototype, making it easier
+    * 'classes' property of qf.Validator moved to its prototype, making it easier
     to override
-  * Items marked deprecated previously are removed
+    * Items marked deprecated previously are removed
    </notes>
   </release>
   <release>
@@ -918,28 +918,28 @@ Other features and changes
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Bug fixes
-  * Server-side validation errors for elements inside Repeats are properly
+    Bug fixes
+    * Server-side validation errors for elements inside Repeats are properly
     displayed
-  * Javascript for Repeat elements moved to a more proper qf.elements.Repeat
+    * Javascript for Repeat elements moved to a more proper qf.elements.Repeat
     namespace, old qf.Repeat is kept as an alias but is deprecated
-  * Fixed markup in usage examples (related to bug #19097)
-  * Callback renderer now generates the same markup as Default renderer out of
+    * Fixed markup in usage examples (related to bug #19097)
+    * Callback renderer now generates the same markup as Default renderer out of
     the box, this addresses bug #19097 and allows correct behaviour of
     client-side validation and Repeat elements
 
-Changes
-  * HTML_QuickForm2::getValue() no longer returns values for internal form
+    Changes
+    * HTML_QuickForm2::getValue() no longer returns values for internal form
     fields (request #19403)
-  * It is no longer possible to set validation errors on hidden elements or
+    * It is no longer possible to set validation errors on hidden elements or
     create Rules that set such errors, doing this will result in an Exception
-  * add() method of qf.elements.Repeat can accept an explicit index for a new
+    * add() method of qf.elements.Repeat can accept an explicit index for a new
     item, returns the index for added item
-  * Array Renderer: changes to buildCommonFields() make it easier to use by
+    * Array Renderer: changes to buildCommonFields() make it easier to use by
     Renderer plugins, arrays built for groups contain 'class' attribute
 
-Backwards compatibility issues
-  * Items marked deprecated will be removed in release 2.0.0
+    Backwards compatibility issues
+    * Items marked deprecated will be removed in release 2.0.0
    </notes>
   </release>
   <release>
@@ -954,27 +954,27 @@ Backwards compatibility issues
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Feature additions
-  * Repeat element: given 'prototype' Container (either fieldset or group)
+    Feature additions
+    * Repeat element: given 'prototype' Container (either fieldset or group)
     is repeated multiple times, with possibility to add / remove repeated items
     via Javascript. Full support for validation of repeated items.
-  * JavascriptBuilder now has separate getSetupCode() and getValidator()
+    * JavascriptBuilder now has separate getSetupCode() and getValidator()
     methods in addition to combined getFormJavascript()
 
-Bug fixes
-  * Generated 'id' attributes no longer can start with numbers
-  * Group::setValue() works properly for a group containing checkboxes named 'foo[]'
-  * 'checked' attribute for a checkbox is removed if form has data sources and
+    Bug fixes
+    * Generated 'id' attributes no longer can start with numbers
+    * Group::setValue() works properly for a group containing checkboxes named 'foo[]'
+    * 'checked' attribute for a checkbox is removed if form has data sources and
     none of them contains a value for that checkbox
-  * Explicitly given value=&quot;0&quot; for a checkbox is not replaced by value=&quot;1&quot;
-  * setValue(null) no longer causes value=&quot;value&quot; in some &lt;input&gt; elements
-  * Hierselect's value is properly updated when its name changes
-  * Unit tests use autoloader instead of explicit 'require_once', all tests now
+    * Explicitly given value=&quot;0&quot; for a checkbox is not replaced by value=&quot;1&quot;
+    * setValue(null) no longer causes value=&quot;value&quot; in some &lt;input&gt; elements
+    * Hierselect's value is properly updated when its name changes
+    * Unit tests use autoloader instead of explicit 'require_once', all tests now
     can be run separately
-  * HTML_QuickForm2_Renderer::register() allows overriding an existing renderer
+    * HTML_QuickForm2_Renderer::register() allows overriding an existing renderer
     type, similar to elements and rules
-  * Frozen HTML for checkboxes and radios no longer uses &lt;tt&gt; tags
-  * Fixed markup in controller/wizard.php and renderers/array-twig.php examples
+    * Frozen HTML for checkboxes and radios no longer uses &lt;tt&gt; tags
+    * Fixed markup in controller/wizard.php and renderers/array-twig.php examples
    </notes>
   </release>
 
@@ -990,34 +990,34 @@ Bug fixes
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Feature additions
-  * Added 'email' Rule (request #16906)
-  * Added Stub Renderer which does minimal form processing. Useful for forms
+    Feature additions
+    * Added 'email' Rule (request #16906)
+    * Added Stub Renderer which does minimal form processing. Useful for forms
     containing Javascript that are output manually.
-  * It is easier to customize client-side validation: all methods of
+    * It is easier to customize client-side validation: all methods of
     qf.Validator are public, CSS class names for validation status are kept in
     validator's property.
-  * Test suite now properly runs from SVN checkout and under PHPUnit 3.6
-  * PHPDoc cleanup, added @method annotations to Container
+    * Test suite now properly runs from SVN checkout and under PHPUnit 3.6
+    * PHPDoc cleanup, added @method annotations to Container
 
-Bug fixes
-  * Fixed running tests for elements separately (bug #19039)
-  * Fixed errors removal in client-side validation (bug #19063)
-  * IDs for autogenerated elements no longer start with underscores, default
+    Bug fixes
+    * Fixed running tests for elements separately (bug #19039)
+    * Fixed errors removal in client-side validation (bug #19063)
+    * IDs for autogenerated elements no longer start with underscores, default
     form output no longer contains empty &lt;label&gt; tags (bug #19097)
-  * HTML_QuickForm2_Controller_Action_Jump defaults to using
+    * HTML_QuickForm2_Controller_Action_Jump defaults to using
     $_SERVER['HTTP_HOST'] for host name (bug #19216)
-  * Group::setValue() now properly allows fluent calls (bug #19307)
-  * Container::validate() will now return false if any contained element
+    * Group::setValue() now properly allows fluent calls (bug #19307)
+    * Container::validate() will now return false if any contained element
     has an error message set
-  * Added abstract render() method to Node and abstract reset() to Renderer
-  * DefaultAction element no longer contains invalid 'width' and 'height'
+    * Added abstract render() method to Node and abstract reset() to Renderer
+    * DefaultAction element no longer contains invalid 'width' and 'height'
     attributes, 'src' attribute defaults to 'data:' URL
-  * 'Live' client-side rules run only once on changing the form field,
+    * 'Live' client-side rules run only once on changing the form field,
     prevent errors when form HTML contains links
 
-Backwards compatibility issues
-  * Items marked deprecated in version 0.6.0 are now removed
+    Backwards compatibility issues
+    * Items marked deprecated in version 0.6.0 are now removed
    </notes>
   </release>
   <release>
@@ -1032,16 +1032,16 @@ Backwards compatibility issues
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Bug fixes
-  * Callback renderer did not export setLabelCallback() method (bug #18833)
-  * Trying to use Static element under PHP 5.2 resulted in fatal error (bug #18874)
-  * persistentFreeze() is on by default for text and password elements
+    Bug fixes
+    * Callback renderer did not export setLabelCallback() method (bug #18833)
+    * Trying to use Static element under PHP 5.2 resulted in fatal error (bug #18874)
+    * persistentFreeze() is on by default for text and password elements
 
-Other features and changes
-  * Added an example showing how to output the form with Twig template engine
-  * Space characters are no longer allowed in 'id' attribute values (request #18683)
-  * Added array type hinting to $data parameter in all elements' constructors
-  * Fixed copypasted PHPDoc in several places
+    Other features and changes
+    * Added an example showing how to output the form with Twig template engine
+    * Space characters are no longer allowed in 'id' attribute values (request #18683)
+    * Added array type hinting to $data parameter in all elements' constructors
+    * Fixed copypasted PHPDoc in several places
    </notes>
   </release>
   <release>
@@ -1056,53 +1056,53 @@ Other features and changes
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Milestone 6: &quot;live&quot; validation, localization changes, moving to beta
+    Milestone 6: &quot;live&quot; validation, localization changes, moving to beta
 
-Major additions and changes
-  * It is now possible to run client-side validation rules on changing the
+    Major additions and changes
+    * It is now possible to run client-side validation rules on changing the
     fields value / leaving the field (onchange / onblur) as well as on form
     submit (see request #5308)
-  * Client-side validation errors are now displayed near the elements by
+    * Client-side validation errors are now displayed near the elements by
     default instead of in javascript alert() dialog. This is mostly similar
     to behaviour of old HTML_QuickForm_DHTMLRulesTableless package.
-  * Localization messages (month and weekday names for Date, upload errors for
+    * Localization messages (month and weekday names for Date, upload errors for
     InputFile) are now returned by special &quot;message provider&quot; object
     or callback (request #18341). A message provider for Date element using
     current locale data is available (request #5558)
-  * Added a new optional renderer that uses PHP callbacks to render form elements
+    * Added a new optional renderer that uses PHP callbacks to render form elements
 
-Other features and changes
-  * Static elements can now wrap their content in a given tag having element's
+    Other features and changes
+    * Static elements can now wrap their content in a given tag having element's
     attributes, e.g. &lt;div&gt; or &lt;img&gt; (see request #8626)
-  * It is now possible to set maximum and minimum hour in Date element's hours
+    * It is now possible to set maximum and minimum hour in Date element's hours
     select (request #4061, works for 24-hour format) and maximum and minimum
     month in its months select (request #5957)
-  * File upload elements can no longer be added to method=&quot;get&quot; forms,
+    * File upload elements can no longer be added to method=&quot;get&quot; forms,
     form's enctype attribute is automatically set (request #16807)
-  * Added a separate HTML_QuickForm2::isSubmitted() method, can be used to
+    * Added a separate HTML_QuickForm2::isSubmitted() method, can be used to
     check whether the form was sumbitted instead of checking an array of its
     data sources for submit one
-  * Added HTML_QuickForm2_Renderer::methodExists() method, this can be used
+    * Added HTML_QuickForm2_Renderer::methodExists() method, this can be used
     to check whether a custom renderer has a necessary method / plugin and
     fall back to the Default renderer if it doesn't
-  * Added default 'value' attribute for radiobuttons
-  * Array renderer always returns group separator as an array of length
+    * Added default 'value' attribute for radiobuttons
+    * Array renderer always returns group separator as an array of length
     count($group) - 1, making it easier to use in templates
-  * Added CLIENT_SERVER and ONBLUR_CLIENT_SERVER constants to
+    * Added CLIENT_SERVER and ONBLUR_CLIENT_SERVER constants to
     HTML_QuickForm2_Rule, these make calls to addRule() less verbose
-  * Minified versions of javascript libraries are now provided
+    * Minified versions of javascript libraries are now provided
 
-Bug fixes
-  * Unit tests can now run under PHPUnit 3.5
-  * Required rule will throw an Exception if not given an error message (bug #18133)
-  * Default maxYear in Date element is now current year rather than 2010 (bug #18171)
-  * Group::removeChild() failed if group's name contained brackets (bug #18182)
-  * Values for elements named like 'foo[]' are now properly handled by getValue()
+    Bug fixes
+    * Unit tests can now run under PHPUnit 3.5
+    * Required rule will throw an Exception if not given an error message (bug #18133)
+    * Default maxYear in Date element is now current year rather than 2010 (bug #18171)
+    * Group::removeChild() failed if group's name contained brackets (bug #18182)
+    * Values for elements named like 'foo[]' are now properly handled by getValue()
 
-Backwards compatibility issues
-  * Javascript libraries are now installed into js/ and js/min/ subdirectories
+    Backwards compatibility issues
+    * Javascript libraries are now installed into js/ and js/min/ subdirectories
     of base data directory
-  * 'errorMessages' parameter for HTML_QuickForm2_Element_InputFile is
+    * 'errorMessages' parameter for HTML_QuickForm2_Element_InputFile is
     deprecated and will be removed in the next release. Use message providers
    </notes>
   </release>
@@ -1118,43 +1118,43 @@ Backwards compatibility issues
    </stability>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Milestone 5: Javascript support, client-side validation, filters
+    Milestone 5: Javascript support, client-side validation, filters
 
-Major additions and changes
-  * It is now possible to run validation rules client-side as well as
+    Major additions and changes
+    * It is now possible to run validation rules client-side as well as
     server-side. This is controlled by passing a parameter to addRule()
-  * Implemented client-side validation for most builtin rules (MaxFileSize and
+    * Implemented client-side validation for most builtin rules (MaxFileSize and
     MimeType rules for file uploads cannot work client-side)
-  * Added JavascriptBuilder class, an instance of that is stored in Renderer and
+    * Added JavascriptBuilder class, an instance of that is stored in Renderer and
     aggregates client-side rules, references to Javascript library files and
     Javascript for elements' initialization. Inline Javascript can be easily
     added with a special Script element
-  * Implemented base Javascript library to support client-side validation.
+    * Implemented base Javascript library to support client-side validation.
     It should hopefully allow easier customization than inline Javascript in
     HTML_QuickForm 3.x
-  * Implemented addFilter() and addRecursiveFilter() methods which can be used
+    * Implemented addFilter() and addRecursiveFilter() methods which can be used
     to (recursively) apply filter callbacks to element values when calling
     getValue(). A new getRawValue() method allows getting unfiltered values.
 
-Other features and changes
-  * Ported Date element from HTML_QuickForm 3.x
-  * Ported Hierselect element from HTML_QuickForm 3.x, it can now use callbacks
+    Other features and changes
+    * Ported Date element from HTML_QuickForm 3.x
+    * Ported Hierselect element from HTML_QuickForm 3.x, it can now use callbacks
     to load additional options via AJAX (see enclosed hierselect-ajax.php example)
-  * Ported Static element from HTML_QuickForm 3.x
-  * Added HTML_QuickForm2_Node::getData() method
-  * Added NotCallback and NotRegex rules, they consider element valid if callback
+    * Ported Static element from HTML_QuickForm 3.x
+    * Added HTML_QuickForm2_Node::getData() method
+    * Added NotCallback and NotRegex rules, they consider element valid if callback
     returns false for its value / if the value does not match regex, respectively
-  * It is now possible for autogenerated 'id' attributes to not have mandatory
+    * It is now possible for autogenerated 'id' attributes to not have mandatory
     indexes appended. Use HTML_Common2::setOption('id_force_append_index', false);
-  * Container rules are called after rules on contained elements (request #17576)
+    * Container rules are called after rules on contained elements (request #17576)
 
-Bug fixes
-  * Added a div around form elements to prevent generating invalid HTML (bug #17217)
-  * Fixed counterintuitive behaviour of DataSource_Array (reported by Cedrick Gout
+    Bug fixes
+    * Added a div around form elements to prevent generating invalid HTML (bug #17217)
+    * Fixed counterintuitive behaviour of DataSource_Array (reported by Cedrick Gout
     in pear-general mailing list)
 
-Backwards compatibility issues
-  * Methods marked as deprecated in release 0.4.0 are now removed
+    Backwards compatibility issues
+    * Methods marked as deprecated in release 0.4.0 are now removed
    </notes>
   </release>
   <release>
@@ -1169,42 +1169,42 @@ Backwards compatibility issues
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <date>2010-03-08</date>
    <notes>
-Milestone 4: port of HTML_QuickForm_Controller, group rules
+    Milestone 4: port of HTML_QuickForm_Controller, group rules
 
-Major additions and changes
-  * Includes a port of HTML_QuickForm_Controller. It is now possible to create
+    Major additions and changes
+    * Includes a port of HTML_QuickForm_Controller. It is now possible to create
     multipage forms (wizards, tabbed forms, etc.) with HTML_QuickForm2
-  * It is now possible to leverage existing rules for group validation
+    * It is now possible to leverage existing rules for group validation
     (see also request #12610)
-  * Rule configuration redone, now an error for an incomplete or bogus
+    * Rule configuration redone, now an error for an incomplete or bogus
     configuration will be thrown immediately on adding a Rule rather than on
     validating with it. Rule::getConfig() will now return the complete
     configuration rather than a local part of it.
 
-Features added
-  * It is possible to disable &quot;intrinsic validation&quot; for select
+    Features added
+    * It is possible to disable &quot;intrinsic validation&quot; for select
     elements (request #13088)
-  * Checkboxes named 'foo[]' properly get their values from data sources
+    * Checkboxes named 'foo[]' properly get their values from data sources
     (request #16806)
-  * Arrays generated by Array Renderer for fieldsets and groups contain
+    * Arrays generated by Array Renderer for fieldsets and groups contain
     'type' keys (request #16937)
-  * Added setElementTemplateForGroupClass() and setElementTemplateForGroupId()
+    * Added setElementTemplateForGroupClass() and setElementTemplateForGroupId()
     methods HTML_QuickForm2_Renderer_Default setting templates for grouped
     elements within a group of a given class or with a given id, respectively
 
-Bug fixes
-  * E_NOTICE for an undefined index could be emitted when outputting
+    Bug fixes
+    * E_NOTICE for an undefined index could be emitted when outputting
     a checkbox (bug #16816)
 
-Backwards compatibility issues
-  * HTML_QuickForm2_Renderer_Default::setGroupedTemplateForClass() is
+    Backwards compatibility issues
+    * HTML_QuickForm2_Renderer_Default::setGroupedTemplateForClass() is
     deprecated
-  * If you implemented custom Rules, you should rewrite them to conform
+    * If you implemented custom Rules, you should rewrite them to conform
     to the new Rule configuration approach (this may require implementing
     custom mergeConfig() and setConfig() methods) and implement
     validateOwner() method instead of checkValue(). Old-style Rules will emit
     notices in 0.4.0 and will stop working completely in the next release.
-  * Packaging changes: data/, docs/ and tests/ contents are installed without
+    * Packaging changes: data/, docs/ and tests/ contents are installed without
     redundant subdirectories, e.g. quickform.css now resides in
     @data_dir@/HTML_QuickForm2 rather than
     @data_dir@/HTML_QuickForm2/data
@@ -1222,65 +1222,65 @@ Backwards compatibility issues
    <date>2009-10-25</date>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Milestone 3: renderers and groups
+    Milestone 3: renderers and groups
 
-Major additions and changes
-  * Renderers implemented, Default and Array renderers ported from QuickForm 3.x
-  * Groups implemented
+    Major additions and changes
+    * Renderers implemented, Default and Array renderers ported from QuickForm 3.x
+    * Groups implemented
 
-Feature requests addressed:
-  * Default rendering without tables (request #9116)
-  * setSeparator() method (request #9942)
+    Feature requests addressed:
+    * Default rendering without tables (request #9116)
+    * setSeparator() method (request #9942)
 
-Bug fixes:
-  * Updated PHP dependency to 5.2.0 (bug #14110, PHP bug #37632)
-  * 'checked' attributed on checkboxes and radios was not updated after changing
+    Bug fixes:
+    * Updated PHP dependency to 5.2.0 (bug #14110, PHP bug #37632)
+    * 'checked' attributed on checkboxes and radios was not updated after changing
     'value' attribute (bug #15708)
 
-Deprecated features:
-  * setOptions() and getOptions() methods of HTML_QuickForm2_Rule are
+    Deprecated features:
+    * setOptions() and getOptions() methods of HTML_QuickForm2_Rule are
     deprecated and will be removed in the next release. Use setConfig() and
     getConfig() instead.
 
-WARNING: next release will have backwards compatibility breaks in setting Rule
-configuration data. If you are just using built-in Rules you should not be
-affected, but if you wrote custom subclasses for HTML_QuickForm2_Rule then pay
-special attention to changes in SVN.
+    WARNING: next release will have backwards compatibility breaks in setting Rule
+    configuration data. If you are just using built-in Rules you should not be
+    affected, but if you wrote custom subclasses for HTML_QuickForm2_Rule then pay
+    special attention to changes in SVN.
    </notes>
   </release>
   <release>
-  <version>
-   <release>0.2.0</release>
-   <api>0.2.0</api>
-  </version>
-  <stability>
-   <release>alpha</release>
-   <api>alpha</api>
-  </stability>
-  <date>2007-10-22</date>
-  <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
-  <notes>
-Milestone 2: now with server-side validation support
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2007-10-22</date>
+   <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
+   <notes>
+    Milestone 2: now with server-side validation support
 
-Major additions and changes:
- * Server-side validation support added
- * API break: changed number and order of parameters for element constructors
- * Fluent interfaces: methods that previously returned nothing now return $this
- * Added method overloading to Container, allowing $form-&gt;addTextarea(...)
+    Major additions and changes:
+    * Server-side validation support added
+    * API break: changed number and order of parameters for element constructors
+    * Fluent interfaces: methods that previously returned nothing now return $this
+    * Added method overloading to Container, allowing $form-&gt;addTextarea(...)
 
-Feature requests addressed:
- * Possibility to control validation of an element based on value of some
-   other element (request #4534)
- * Rule comparing value of an element with numeric constants (request #4728)
- * Possibility to toggle validation of empty elements (request #9097)
+    Feature requests addressed:
+    * Possibility to control validation of an element based on value of some
+    other element (request #4534)
+    * Rule comparing value of an element with numeric constants (request #4728)
+    * Possibility to toggle validation of empty elements (request #9097)
 
-Bug fixes (bugs submitted for HTML_QuickForm package):
- * Wrong options could be selected in &lt;select&gt; elements if numeric strings
-   were used as options' values (bug #10837, bug #11138)
+    Bug fixes (bugs submitted for HTML_QuickForm package):
+    * Wrong options could be selected in &lt;select&gt; elements if numeric strings
+    were used as options' values (bug #10837, bug #11138)
 
-Other resources to consider:
- * QF2 development wiki: http://quickform.mamasam.com/wiki/home
- * PHPUnit package from channel pear.phpunit.de is needed to run tests
+    Other resources to consider:
+    * QF2 development wiki: http://quickform.mamasam.com/wiki/home
+    * PHPUnit package from channel pear.phpunit.de is needed to run tests
    </notes>
   </release>
   <release>
@@ -1295,28 +1295,28 @@ Other resources to consider:
    <date>2007-04-17</date>
    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</license>
    <notes>
-Milestone 1
+    Milestone 1
 
-Available functionality in this release:
- * Base classes
- * Standard HTML elements
- * Data sources
+    Available functionality in this release:
+    * Base classes
+    * Standard HTML elements
+    * Data sources
 
-Changes to observe for those familiar with HTML_QuickForm:
- * DOM-inspired API for working with element hierarchy
- * Streamlined API for processing the elements' values
+    Changes to observe for those familiar with HTML_QuickForm:
+    * DOM-inspired API for working with element hierarchy
+    * Streamlined API for processing the elements' values
 
-The following feature requests were addressed in this release:
- * Request #1283: Optgroup support
- * Request #1681: Better access to grouped elements
- * Request #4137: Form-wide functions for unfreezing and setting persistent freeze
-   (also in request #6421)
- * Request #4564: Checkboxes can be created with arbitrary value
- * Request #4793: Fixed the misspelled 'persistent' word in method names
+    The following feature requests were addressed in this release:
+    * Request #1283: Optgroup support
+    * Request #1681: Better access to grouped elements
+    * Request #4137: Form-wide functions for unfreezing and setting persistent freeze
+    (also in request #6421)
+    * Request #4564: Checkboxes can be created with arbitrary value
+    * Request #4793: Fixed the misspelled 'persistent' word in method names
 
-Other resources to consider:
- * QF2 development wiki: http://quickform.mamasam.com/wiki/home
- * PHPUnit package from channel pear.phpunit.de is needed to run tests
+    Other resources to consider:
+    * QF2 development wiki: http://quickform.mamasam.com/wiki/home
+    * PHPUnit package from channel pear.phpunit.de is needed to run tests
    </notes>
   </release>
  </changelog>
