@@ -23,7 +23,8 @@ Please report issues via the [PEAR bug tracker] or [Github issues].
 
 Pull requests are welcome.
 
-[pear/HTML_QuickForm2]: https://github.com/pear/HTML_QuickForm2/
+[PEAR HTML_QuickForm2]: https://pear.php.net/package/HTML_QuickForm2/
+[PEAR SVN]: https://svn.php.net/repository/pear/packages/HTML_QuickForm2
 [PEAR HTML_QuickForm]: https://pear.php.net/package/HTML_QuickForm/
 [PEAR bug tracker]: https://pear.php.net/bugs/search.php?cmd=display&package_name[]=HTML_QuickForm2
 [Github issues]: https://github.com/pear/HTML_QuickForm2/issues
