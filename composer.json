@@ -30,7 +30,8 @@
         "ext-mbstring":        "*"
     },
     "require-dev": {
-        "yoast/phpunit-polyfills": "^1.0"
+        "yoast/phpunit-polyfills": "^1.0",
+        "vimeo/psalm": "^4.22"
     },
     "autoload": {
         "psr-0": {
