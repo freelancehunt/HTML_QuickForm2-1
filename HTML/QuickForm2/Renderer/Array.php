@@ -129,7 +129,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
 
    /**
     * Additional style information for elements
-    * @var array
+    * @var array<string, string>
     */
     public $styles = [];
 
@@ -186,7 +186,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
     public function buildCommonFields(HTML_QuickForm2_Node $element)
     {
         $ary = [
-            'id'                 => $element->getId(),
+            'id'                 => (string)$element->getId(),
             'frozen'             => $element->toggleFrozen(),
             'element-attributes' => $element->getAttributes(),
         ];
