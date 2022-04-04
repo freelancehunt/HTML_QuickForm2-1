@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,10 +22,12 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Rule_Callback class
  */
-class HTML_QuickForm2_Rule_CallbackTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Rule_CallbackTest extends TestCase
 {
     public function checkNotFoo($value)
     {
@@ -42,14 +44,14 @@ class HTML_QuickForm2_Rule_CallbackTest extends PHPUnit_Framework_TestCase
             $callbackMissing = new HTML_QuickForm2_Rule_Callback($mockEl, 'an error');
             $this->fail('Expected HTML_QuickForm2_InvalidArgumentException was not thrown');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/Callback Rule requires a valid callback/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/Callback Rule requires a valid callback/', $e->getMessage());
         }
         try {
             $callbackBogus = new HTML_QuickForm2_Rule_Callback($mockEl, 'an error',
                                     ['callback' => 'bogusfunctionname']);
             $this->fail('Expected HTML_QuickForm2_InvalidArgumentException was not thrown');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/Callback Rule requires a valid callback/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/Callback Rule requires a valid callback/', $e->getMessage());
         }
     }
 

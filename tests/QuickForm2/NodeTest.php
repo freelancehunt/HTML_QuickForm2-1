@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,43 +22,21 @@
 /** Sets up includes */
 require_once dirname(__DIR__) . '/TestHelper.php';
 
-/**
- * A non-abstract subclass of Node
- *
- * We can't instantiate the class directly and thus need to "implement" its
- * abstract methods. And also make validate() public to be able to test.
- */
-class HTML_QuickForm2_NodeImpl extends HTML_QuickForm2_Node
-{
-    public function getType() { return 'concrete'; }
-    public function getRawValue() { return ''; }
-    public function setValue($value) { return ''; }
-    public function __toString() { return ''; }
+// pear-package-only require_once __DIR__ . '/../stubs/NodeImpl.php';
 
-    public function getName() { return ''; }
-    public function setName($name) { }
-
-    protected function updateValue() { }
-
-    public function validate() { return parent::validate(); }
-
-    public function getJavascriptValue($inContainer = false) { return ''; }
-    public function getJavascriptTriggers() { return []; }
-
-    public function render(HTML_QuickForm2_Renderer $renderer) { }
-}
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Unit test for HTML_QuickForm2_Node class,
  */
-class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_NodeTest extends TestCase
 {
     public function testCanSetLabel()
     {
-        $obj = new HTML_QuickForm2_NodeImpl();
+        $obj = new NodeImpl();
         $this->assertNull($obj->getLabel());
 
-        $obj2 = new HTML_QuickForm2_NodeImpl(null, null, ['label' => 'a label']);
+        $obj2 = new NodeImpl(null, null, ['label' => 'a label']);
         $this->assertEquals('a label', $obj2->getLabel());
 
         $this->assertSame($obj2, $obj2->setLabel('another label'));
@@ -67,7 +45,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testCanFreezeAndUnfreeze()
     {
-        $obj = new HTML_QuickForm2_NodeImpl();
+        $obj = new NodeImpl();
         $this->assertFalse($obj->toggleFrozen(), 'Elements should NOT be frozen by default');
 
         $oldFrozen = $obj->toggleFrozen(true);
@@ -80,7 +58,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testCanSetPersistentFreeze()
     {
-        $obj = new HTML_QuickForm2_NodeImpl();
+        $obj = new NodeImpl();
         $this->assertFalse($obj->persistentFreeze(), 'Frozen element\'s data should NOT persist by default');
 
         $oldPersistent = $obj->persistentFreeze(true);
@@ -93,7 +71,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testCanSetAndGetError()
     {
-        $obj = new HTML_QuickForm2_NodeImpl();
+        $obj = new NodeImpl();
         $this->assertEquals('', $obj->getError(), 'Elements shouldn\'t have a error message by default');
 
         $this->assertSame($obj, $obj->setError('An error message'));
@@ -102,7 +80,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testValidate()
     {
-        $valid = new HTML_QuickForm2_NodeImpl();
+        $valid = new NodeImpl();
         $ruleTrue = $this->getMockBuilder('HTML_QuickForm2_Rule')
             ->setMethods(['validateOwner'])
             ->setConstructorArgs([$valid, 'A message'])
@@ -113,7 +91,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($valid->validate());
         $this->assertEquals('', $valid->getError());
 
-        $invalid = new HTML_QuickForm2_NodeImpl();
+        $invalid = new NodeImpl();
         $ruleFalse = $this->getMockBuilder('HTML_QuickForm2_Rule')
             ->setMethods(['validateOwner'])
             ->setConstructorArgs([$invalid, 'An error message'])
@@ -127,7 +105,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testValidateUntilErrorMessage()
     {
-        $preError = new HTML_QuickForm2_NodeImpl();
+        $preError = new NodeImpl();
         $preError->setError('some message');
         $ruleIrrelevant = $this->getMockBuilder('HTML_QuickForm2_Rule')
             ->setMethods(['validateOwner'])
@@ -137,7 +115,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
         $preError->addRule($ruleIrrelevant);
         $this->assertFalse($preError->validate());
 
-        $manyRules = new HTML_QuickForm2_NodeImpl();
+        $manyRules = new NodeImpl();
         $ruleTrue = $this->getMockBuilder('HTML_QuickForm2_Rule')
             ->setMethods(['validateOwner'])
             ->setConstructorArgs([$manyRules, 'irrelevant message'])
@@ -171,7 +149,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveRule()
     {
-        $node    = new HTML_QuickForm2_NodeImpl();
+        $node    = new NodeImpl();
         $removed = $node->addRule(
             $this->getMockBuilder('HTML_QuickForm2_Rule')
                 ->setMethods(['validateOwner'])
@@ -185,7 +163,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testAddRuleOnlyOnce()
     {
-        $node = new HTML_QuickForm2_NodeImpl();
+        $node = new NodeImpl();
         $mock = $node->addRule(
             $this->getMockBuilder('HTML_QuickForm2_Rule')
                 ->setMethods(['validateOwner'])
@@ -201,8 +179,8 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveRuleOnChangingOwner()
     {
-        $nodeOne  = new HTML_QuickForm2_NodeImpl();
-        $nodeTwo  = new HTML_QuickForm2_NodeImpl();
+        $nodeOne  = new NodeImpl();
+        $nodeTwo  = new NodeImpl();
         $mockRule = $nodeOne->addRule(
             $this->getMockBuilder('HTML_QuickForm2_Rule')
                 ->setMethods(['validateOwner'])
@@ -219,7 +197,7 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
 
     public function testElementIsNotRequiredByDefault()
     {
-        $node = new HTML_QuickForm2_NodeImpl();
+        $node = new NodeImpl();
         $this->assertFalse($node->isRequired());
     }
 
@@ -227,12 +205,12 @@ class HTML_QuickForm2_NodeTest extends PHPUnit_Framework_TestCase
     * Disallow spaces in values of 'id' attributes
     *
     * @dataProvider invalidIdProvider
-    * @expectedException HTML_QuickForm2_InvalidArgumentException
     * @link http://pear.php.net/bugs/17576
     */
     public function testRequest18683($id)
     {
-        $node = new HTML_QuickForm2_NodeImpl();
+        $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
+        $node = new NodeImpl();
         $node->setId($id);
     }
 

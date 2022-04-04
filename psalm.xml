@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="3"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="HTML" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnStatement>
+            <!--
+            Looks like a bug in psalm with type inference
+            -->
+            <errorLevel type="suppress">
+                <file name="HTML/QuickForm2/Container/Group.php" />
+                <file name="HTML/QuickForm2/Node.php" />
+            </errorLevel>
+        </LessSpecificReturnStatement>
+        <PossiblyNullPropertyAssignmentValue>
+            <!--
+            Dunno how to properly fix this, ignore for now
+            -->
+            <errorLevel type="suppress">
+                <file name="HTML/QuickForm2/Renderer/Callback.php" />
+            </errorLevel>
+        </PossiblyNullPropertyAssignmentValue>
+        <UndefinedInterfaceMethod>
+            <!--
+            On PHP 8.1 psalm assumes that \HTML_QuickForm2_Container::getIterator()
+            returns Traversable rather than HTML_QuickForm2_ContainerIterator
+            -->
+            <errorLevel type="suppress">
+                <file name="HTML/QuickForm2/Controller/Page.php" />
+            </errorLevel>
+        </UndefinedInterfaceMethod>
+    </issueHandlers>
+</psalm>

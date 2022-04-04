@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -104,7 +104,7 @@ class HTML_QuickForm2_Controller_SessionContainer
     *
     * @param string $pageId Page ID
     *
-    * @return   bool
+    * @return   bool|null
     */
     public function getValidationStatus($pageId)
     {
@@ -116,7 +116,7 @@ class HTML_QuickForm2_Controller_SessionContainer
    /**
     * Stores the controller data sources
     *
-    * @param array $datasources A new data source list
+    * @param HTML_QuickForm2_DataSource[] $datasources A new data source list
     *
     * @throws   HTML_QuickForm2_InvalidArgumentException    if given array
     *               contains something that is not a valid data source
@@ -136,7 +136,7 @@ class HTML_QuickForm2_Controller_SessionContainer
    /**
     * Returns the controller data sources
     *
-    * @return array
+    * @return HTML_QuickForm2_DataSource[]
     */
     public function getDatasources()
     {
@@ -152,7 +152,7 @@ class HTML_QuickForm2_Controller_SessionContainer
     * {@link HTML_QuickForm2_Controller::destroySessionContainer()}
     *
     * @param string $name  Parameter name
-    * @param string $value Parameter value
+    * @param mixed  $value Parameter value
     */
     public function storeOpaque($name, $value)
     {

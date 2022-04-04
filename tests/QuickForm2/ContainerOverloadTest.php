@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,14 +22,18 @@
 /** Sets up includes */
 require_once dirname(__DIR__) . '/TestHelper.php';
 
+// pear-package-only require_once __DIR__ . '/../stubs/ContainerImpl.php';
+
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Container overloaded methods
  */
-class HTML_QuickForm2_ContainerOverloadTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_ContainerOverloadTest extends TestCase
 {
     public function testAddElements()
     {
-        $c = new HTML_QuickForm2_ContainerImpl('cCOT1');
+        $c = new ContainerImpl('cCOT1');
         $el1 = $c->addText('eCOT1', ['size' => 30], ['label' => 'Label']);
         $this->assertSame($el1, $c->getElementById('eCOT1-0'));
 
@@ -41,7 +45,7 @@ class HTML_QuickForm2_ContainerOverloadTest extends PHPUnit_Framework_TestCase
 
     public function testAddElementsWithBracketsInName()
     {
-        $c = new HTML_QuickForm2_ContainerImpl('cCOT0');
+        $c = new ContainerImpl('cCOT0');
         $el1 = $c->addCheckbox('chCOT[]');
         $el2 = $c->addCheckbox('chCOT[]');
         $this->assertSame($el1, $c->getElementById('chCOT-0-0'));
@@ -50,7 +54,7 @@ class HTML_QuickForm2_ContainerOverloadTest extends PHPUnit_Framework_TestCase
 
     public function testAddUnknownType()
     {
-        $c = new HTML_QuickForm2_ContainerImpl('cCOT2');
+        $c = new ContainerImpl('cCOT2');
         try {
             $c->addUnknown('uCOT1');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
@@ -66,7 +70,7 @@ class HTML_QuickForm2_ContainerOverloadTest extends PHPUnit_Framework_TestCase
         HTML_QuickForm2_Factory::registerElement('super_box', 'HTML_QuickForm2_Element_InputCheckbox');
         $this->assertTrue(HTML_QuickForm2_Factory::isElementRegistered('super_box'));
 
-        $c = new HTML_QuickForm2_ContainerImpl('cCOT3');
+        $c = new ContainerImpl('cCOT3');
         $el1 = $c->addSuper_Box('sBox_1');
         $el2 = $c->addsuper_box('sBox_2');
         $el3 = $c->addSuper_box('sBox_3');

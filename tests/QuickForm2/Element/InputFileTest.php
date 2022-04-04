@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,12 +22,14 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Element_InputFile class
  */
-class HTML_QuickForm2_Element_InputFileTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Element_InputFileTest extends TestCase
 {
-    public function setUp()
+    protected function set_up()
     {
         $_FILES = [
             'foo' => [
@@ -88,15 +90,13 @@ class HTML_QuickForm2_Element_InputFileTest extends PHPUnit_Framework_TestCase
 
         $toobig = $form->appendChild(new HTML_QuickForm2_Element_InputFile('toobig'));
         $this->assertFalse($form->validate());
-        $this->assertContains('987654', $toobig->getError());
+        $this->assertStringContainsString('987654', $toobig->getError());
     }
 
-   /**
-    * @expectedException HTML_QuickForm2_InvalidArgumentException
-    */
     public function testInvalidMessageProvider()
     {
-        $invalid = new HTML_QuickForm2_Element_InputFile('invalid', null, ['messageProvider' => []]);
+        $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
+        new HTML_QuickForm2_Element_InputFile('invalid', null, ['messageProvider' => []]);
     }
 
     public static function callbackMessageProvider($messageId, $langId)

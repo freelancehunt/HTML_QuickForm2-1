@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,10 +22,12 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Element_InputHidden class
  */
-class HTML_QuickForm2_Element_InputHiddenTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Element_InputHiddenTest extends TestCase
 {
     public function testCannotBeFrozen()
     {
@@ -34,11 +36,9 @@ class HTML_QuickForm2_Element_InputHiddenTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($hidden->toggleFrozen());
     }
 
-    /**
-     * @expectedException HTML_QuickForm2_InvalidArgumentException
-     */
     public function testCannotSetError()
     {
+        $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
         $hidden = new HTML_QuickForm2_Element_InputHidden('noError');
         $hidden->setError('a message');
     }

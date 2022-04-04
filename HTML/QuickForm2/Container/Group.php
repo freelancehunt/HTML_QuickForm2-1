@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -43,7 +43,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
     * element names, like groupname[elementname].
     * @var string
     */
-    protected $name;
+    protected $name = '';
 
    /**
     * Previous group name
@@ -51,7 +51,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
     * Used to restore children names if necessary.
     * @var string
     */
-    protected $previousName;
+    protected $previousName = '';
 
     public function getType()
     {
@@ -60,7 +60,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
 
     protected function prependsName()
     {
-        return strlen($this->name) > 0;
+        return '' !== $this->name;
     }
 
     protected function getChildValues($filtered = false)
@@ -170,6 +170,13 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
     }
 
 
+    /**
+     * {@inheritDoc}
+     *
+     * Group's name is always a string
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
@@ -178,7 +185,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
     public function setName($name)
     {
         $this->previousName = $this->name;
-        $this->name = $name;
+        $this->name = (string)$name;
         foreach ($this as $child) {
             $this->renameChild($child);
         }
@@ -196,18 +203,21 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
     */
     protected function renameChild(HTML_QuickForm2_Node $element)
     {
-        $tokens = explode('[', str_replace(']', '', $element->getName()));
+        $tokens = explode(
+            '[',
+            str_replace(']', '', (string)$element->getName())
+        );
         // Child has already been renamed by its group before
-        if ($this === $element->getContainer() && strlen($this->previousName)) {
+        if ($this === $element->getContainer() && '' !== $this->previousName) {
             $gtokens = explode('[', str_replace(']', '', $this->previousName));
             if ($gtokens === array_slice($tokens, 0, count($gtokens))) {
                 array_splice($tokens, 0, count($gtokens));
             }
         }
 
-        if (strlen($this->name)) {
+        if ('' !== $this->name) {
             $element->setName($this->name . '[' . implode('][', $tokens) . ']');
-        } elseif (strlen($this->previousName)) {
+        } elseif ('' !== $this->previousName) {
             $elname = array_shift($tokens);
             foreach ($tokens as $token) {
                 $elname .= '[' . $token . ']';
@@ -257,7 +267,8 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
         if ($this->prependsName()) {
             $name = preg_replace(
                 '/^' . preg_quote($this->getName(), '/') . '\[([^\]]*)\]/',
-                '\1', $element->getName()
+                '\1',
+                (string)$element->getName()
             );
             $element->setName($name);
         }
@@ -299,7 +310,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
    /**
     * Returns string(s) to separate grouped elements
     *
-    * @return   string|array    Separator, null if not set
+    * @return   string|array|null    Separator, null if not set
     */
     public function getSeparator()
     {
@@ -328,6 +339,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
     {
         // pear-package-only HTML_QuickForm2_Loader::loadClass('HTML_QuickForm2_Renderer');
 
+        /** @var HTML_QuickForm2_Renderer_Default $renderer */
         $renderer = $this->render(
             HTML_QuickForm2_Renderer::factory('default')
                 ->setTemplateForId($this->getId(), '{content}')

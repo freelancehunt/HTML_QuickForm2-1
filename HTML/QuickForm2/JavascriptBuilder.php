@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -39,13 +39,13 @@ class HTML_QuickForm2_JavascriptBuilder
 {
    /**
     * Client-side rules
-    * @var array
+    * @var array<string, string[]>
     */
     protected $rules = [];
 
    /**
     * Elements' setup code
-    * @var array
+    * @var array<string, string[]>
     */
     protected $scripts = [];
 
@@ -54,16 +54,20 @@ class HTML_QuickForm2_JavascriptBuilder
     *
     * Needed when the form contains an empty repeat element
     *
-    * @var array
+    * @var array<string, bool>
     */
     protected $forceValidator = [];
 
     /**
     * Javascript libraries
-    * @var array
+    * @var array<string, array{file: string, webPath: ?string, absPath: ?string}>
     */
     protected $libraries = [
-        'base' => ['file' => 'quickform.js']
+        'base' => [
+            'file'    => 'quickform.js',
+            'webPath' => null,
+            'absPath' => null
+        ]
     ];
 
    /**
@@ -82,7 +86,7 @@ class HTML_QuickForm2_JavascriptBuilder
     * Current form ID
     * @var string
     */
-    protected $formId = null;
+    protected $formId;
 
 
    /**
@@ -142,9 +146,21 @@ class HTML_QuickForm2_JavascriptBuilder
     */
     public function getLibraries($inline = false, $addScriptTags = true)
     {
-        $ret = $inline? '': [];
-        foreach ($this->libraries as $name => $library) {
-            if ($inline) {
+        if (!$inline) {
+            $ret = [];
+            foreach ($this->libraries as $name => $library) {
+                $path = !empty($library['webPath'])? $library['webPath']: $this->defaultWebPath;
+                if ('/' != substr($path, -1)) {
+                    $path .= '/';
+                }
+                $ret[$name] = $addScriptTags
+                              ? "<script type=\"text/javascript\" src=\"{$path}{$library['file']}\"></script>"
+                              : $path . $library['file'];
+            }
+            return $ret;
+        } else {
+            $ret = '';
+            foreach ($this->libraries as $name => $library) {
                 $path = !empty($library['absPath'])? $library['absPath']: $this->defaultAbsPath;
                 if (DIRECTORY_SEPARATOR != substr($path, -1)) {
                     $path .= DIRECTORY_SEPARATOR;
@@ -155,18 +171,9 @@ class HTML_QuickForm2_JavascriptBuilder
                     );
                 }
                 $ret .= ('' == $ret? '': "\n") . $file;
-
-            } else {
-                $path = !empty($library['webPath'])? $library['webPath']: $this->defaultWebPath;
-                if ('/' != substr($path, -1)) {
-                    $path .= '/';
-                }
-                $ret[$name] = $addScriptTags
-                              ? "<script type=\"text/javascript\" src=\"{$path}{$library['file']}\"></script>"
-                              : $path . $library['file'];
             }
+            return $addScriptTags ? $this->wrapScript($ret) : $ret;
         }
-        return ($inline && $addScriptTags) ? $this->wrapScript($ret) : $ret;
     }
 
 
@@ -319,7 +326,7 @@ class HTML_QuickForm2_JavascriptBuilder
             return $value? 'true': 'false';
 
         } elseif (is_int($value) || is_float($value)) {
-            return $value;
+            return (string)$value;
 
         } elseif (is_string($value)) {
             return '"' . strtr($value, [

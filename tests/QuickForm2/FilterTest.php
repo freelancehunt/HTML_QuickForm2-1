@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,13 +22,9 @@
 /** Sets up includes */
 require_once dirname(__DIR__) . '/TestHelper.php';
 
-class HTML_QuickForm2_ContainerFilterImpl extends HTML_QuickForm2_Container
-{
-    public function getType() { return 'concrete'; }
-    public function setValue($value) { return ''; }
-    public function __toString() { return ''; }
-    public function validate() { return parent::validate(); }
-}
+// pear-package-only require_once __DIR__ . '/../stubs/ContainerImpl.php';
+
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * A filter that modifies the value on every iteration
@@ -42,9 +38,9 @@ function repeatFilter($value)
 /**
  * Unit test for HTML_QuickForm2_Rule class
  */
-class HTML_QuickForm2_FilterTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_FilterTest extends TestCase
 {
-    public function setUp()
+    protected function set_up()
     {
         $_REQUEST['_qf__filters'] = '';
         $_POST = [
@@ -160,7 +156,7 @@ class HTML_QuickForm2_FilterTest extends PHPUnit_Framework_TestCase
 
     public function testContainer()
     {
-        $c1 = new HTML_QuickForm2_ContainerFilterImpl('filter');
+        $c1 = new ContainerImpl('filter');
         $this->assertNull($c1->getValue());
 
         $el1 = $c1->addText('foo');
@@ -233,7 +229,7 @@ class HTML_QuickForm2_FilterTest extends PHPUnit_Framework_TestCase
 
     public function testContainerNonRecursive()
     {
-        $c = new HTML_QuickForm2_ContainerFilterImpl('nonrecursive');
+        $c = new ContainerImpl('nonrecursive');
         $el1 = $c->addElement('text', 'el1')->setValue(' foo');
         $el2 = $c->addElement('text', 'el2')->setValue('bar ');
 

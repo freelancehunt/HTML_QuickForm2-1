@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,10 +22,12 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Rule_Nonempty class
  */
-class HTML_QuickForm2_Rule_NonemptyTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Rule_NonemptyTest extends TestCase
 {
     function testValidateGenericElement()
     {
@@ -95,14 +97,11 @@ class HTML_QuickForm2_Rule_NonemptyTest extends PHPUnit_Framework_TestCase
 
     public function testPositiveNumberRequired()
     {
+        $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
         $mockEl = $this->getMockBuilder('HTML_QuickForm2_Element')
-            ->setMethods(['getType',
-                                 'getRawValue', 'setValue', '__toString'])
+            ->setMethods(['getType', 'getRawValue', 'setValue', '__toString'])
             ->getMock();
-        try {
-            $rule = new HTML_QuickForm2_Rule_Nonempty($mockEl, 'an error', -1);
-            $this->fail('Expected HTML_QuickForm2_InvalidArgumentException was not thrown');
-        } catch (HTML_QuickForm2_InvalidArgumentException $e) {}
+        new HTML_QuickForm2_Rule_Nonempty($mockEl, 'an error', -1);
     }
 
    /**
@@ -167,11 +166,11 @@ class HTML_QuickForm2_Rule_NonemptyTest extends PHPUnit_Framework_TestCase
         $mockContainer = $this->getMockBuilder('HTML_QuickForm2_Container')
             ->setMethods(['getType', 'setValue', '__toString'])
             ->getMock();
-        $foo = $mockContainer->addElement('text', 'foo', ['id' => 'foo']);
-        $bar = $mockContainer->addElement('text', 'bar', ['id' => 'bar']);
+        $mockContainer->addElement('text', 'foo', ['id' => 'foo']);
+        $mockContainer->addElement('text', 'bar', ['id' => 'bar']);
 
         $nonEmpty = new HTML_QuickForm2_Rule_Nonempty($mockContainer, 'an error');
-        $this->assertContains('["foo","bar"]', $nonEmpty->getJavascript());
+        $this->assertStringContainsString('["foo","bar"]', $nonEmpty->getJavascript());
     }
 }
 ?>

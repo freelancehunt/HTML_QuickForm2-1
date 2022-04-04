@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -269,7 +269,9 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
     {
         $elTpl = $this->prepareTemplate($this->findTemplate($element), $element);
         $this->html[count($this->html) - 1][] = str_replace(
-            ['{element}', '{id}'], [$element, $element->getId()], $elTpl
+            ['{element}', '{id}'],
+            [(string)$element, (string)$element->getId()],
+            $elTpl
         );
     }
 
@@ -284,7 +286,9 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
             $this->hiddenHtml .= $element->__toString();
         } else {
             $this->html[count($this->html) - 1][] = str_replace(
-                '{element}', $element, $this->findTemplate($element)
+                '{element}',
+                (string)$element,
+                $this->findTemplate($element)
             );
         }
     }
@@ -311,7 +315,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
 
         $cTpl  = str_replace(
             ['{attributes}', '{id}'],
-            [$container->getAttributes(true), $container->getId()],
+            [$container->getAttributes(true), (string)$container->getId()],
             $this->prepareTemplate($this->findTemplate($container, '{content}'), $container)
         );
         $cHtml  = array_pop($this->html);
@@ -340,6 +344,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
     */
     public function finishGroup(HTML_QuickForm2_Node $group)
     {
+        /** @var HTML_QuickForm2_Container_Group $group */
         $gTpl = str_replace(
             ['{attributes}', '{id}', '{class}'],
             [$group->getAttributes(true), array_pop($this->groupId),
@@ -468,8 +473,8 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
     */
     public function findTemplate(HTML_QuickForm2_Node $element, $default = '{element}')
     {
-        if (!empty($this->templatesForId[$element->getId()])) {
-            return $this->templatesForId[$element->getId()];
+        if (!empty($this->templatesForId[(string)$element->getId()])) {
+            return $this->templatesForId[(string)$element->getId()];
         }
         $class          = strtolower(get_class($element));
         $groupId        = end($this->groupId);
@@ -490,17 +495,18 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
                 }
             }
 
-            $group = $element->getContainer();
-            $grClass = strtolower(get_class($group));
-            do {
-                if (!empty($this->elementTemplatesForGroupClass[$grClass])) {
-                    foreach (array_keys($elementClasses) as $elClass) {
-                        if (!empty($this->elementTemplatesForGroupClass[$grClass][$elClass])) {
-                            return $this->elementTemplatesForGroupClass[$grClass][$elClass];
+            if (null !== ($group = $element->getContainer())) {
+                $grClass = strtolower(get_class($group));
+                do {
+                    if (!empty($this->elementTemplatesForGroupClass[$grClass])) {
+                        foreach (array_keys($elementClasses) as $elClass) {
+                            if (!empty($this->elementTemplatesForGroupClass[$grClass][$elClass])) {
+                                return $this->elementTemplatesForGroupClass[$grClass][$elClass];
+                            }
                         }
                     }
-                }
-            } while ($grClass = strtolower(get_parent_class($grClass)));
+                } while ($grClass = strtolower(get_parent_class($grClass)));
+            }
         }
         return $default;
     }
@@ -569,17 +575,17 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
    /**
     * Outputs element's label(s), removes empty label blocks
     *
-    * @param string       $elTpl Element template
-    * @param string|array $label Element label(s)
+    * @param string               $elTpl Element template
+    * @param string|string[]|null $label Element label(s)
     *
     * @return   string  Template with label substitutions done
     */
     public function outputLabel($elTpl, $label)
     {
-        $mainLabel = is_array($label)? array_shift($label): $label;
+        $mainLabel = is_array($label)? array_shift($label): (string)$label;
         $elTpl     = str_replace('{label}', $mainLabel, $elTpl);
         if (false !== strpos($elTpl, '<qf:label>')) {
-            if ($mainLabel) {
+            if ('' !== $mainLabel) {
                 $elTpl = str_replace(['<qf:label>', '</qf:label>'], ['', ''], $elTpl);
             } else {
                 $elTpl = preg_replace('!<qf:label>.*</qf:label>!isU', '', $elTpl);

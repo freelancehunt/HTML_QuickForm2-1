@@ -1,6 +1,6 @@
 # HTML_QuickForm2
 
-[![Build Status](https://travis-ci.org/freelancehunt/HTML_QuickForm2.svg?branch=trunk)](https://travis-ci.org/freelancehunt/HTML_QuickForm2)
+[![Build Status](https://travis-ci.com/freelancehunt/HTML_QuickForm2/workflows/Continuous%20Integration/badge.svg?branch=trunk)](https://travis-ci.com/freelancehunt/HTML_QuickForm2/actions?query=branch%3Atrunk+workflow%3A%22Continuous+Integration%22)
 
 This is fork of [pear/HTML_QuickForm2] with additional changes for our needs, so it doesn't work for everyone.
 
@@ -23,7 +23,8 @@ Please report issues via the [PEAR bug tracker] or [Github issues].
 
 Pull requests are welcome.
 
-[pear/HTML_QuickForm2]: https://github.com/pear/HTML_QuickForm2/
+[PEAR HTML_QuickForm2]: https://pear.php.net/package/HTML_QuickForm2/
+[PEAR SVN]: https://svn.php.net/repository/pear/packages/HTML_QuickForm2
 [PEAR HTML_QuickForm]: https://pear.php.net/package/HTML_QuickForm/
 [PEAR bug tracker]: https://pear.php.net/bugs/search.php?cmd=display&package_name[]=HTML_QuickForm2
 [Github issues]: https://github.com/pear/HTML_QuickForm2/issues

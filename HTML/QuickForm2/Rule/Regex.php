@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -58,22 +58,22 @@ class HTML_QuickForm2_Rule_Regex extends HTML_QuickForm2_Rule
     {
         $value = $this->owner->getValue();
         if ($this->owner instanceof HTML_QuickForm2_Element_InputFile) {
-            if (!isset($value['error']) || UPLOAD_ERR_NO_FILE == $value['error']) {
+            if (!isset($value['error']) || UPLOAD_ERR_NO_FILE === $value['error']) {
                 return true;
             }
             $value = $value['name'];
-        } elseif (!strlen($value)) {
+        } elseif ('' === (string)$value) {
             return true;
         }
-        return preg_match($this->getConfig() . 'D', $value);
+        return (bool)preg_match($this->getConfig() . 'D', $value);
     }
 
    /**
     * Sets the regular expression to validate with
     *
-    * @param string $config Regular expression
+    * @param mixed $config Regular expression (string)
     *
-    * @return   HTML_QuickForm2_Rule
+    * @return   $this
     * @throws   HTML_QuickForm2_InvalidArgumentException    if $config is not a string
     */
     public function setConfig($config)
@@ -90,23 +90,45 @@ class HTML_QuickForm2_Rule_Regex extends HTML_QuickForm2_Rule
    /**
     * Returns the client-side validation callback
     *
-    * For this to work properly, slashes have to be used as regex delimiters.
-    * The method takes care of transforming PHP unicode escapes in regexps to
-    * JS unicode escapes if using 'u' modifier (see bug #12736)
+    * For this to work, slashes have to be used as regex delimiters.
     *
-    * @return   string
+    * @return string
+    * @throws HTML_QuickForm2_InvalidArgumentException
     */
     protected function getJavascriptCallback()
     {
+        $regex = $this->prepareJavascriptRegexp();
+
+        return "function() { var value = " . $this->owner->getJavascriptValue() .
+               "; return qf.rules.empty(value) || {$regex}.test(value); }";
+    }
+
+    /**
+     * Prepares the regular expression for usage in Javascript code
+     *
+     * Will throw an exception if anything but slashes is used as delimiters.
+     * Also takes care of transforming PHP unicode escapes in regexps to
+     * JS unicode escapes if using 'u' modifier (see bug #12736)
+     *
+     * @return string
+     * @throws HTML_QuickForm2_InvalidArgumentException
+     */
+    protected function prepareJavascriptRegexp()
+    {
         $regex = $this->getConfig();
 
-        if ($pos = strpos($regex, 'u', strrpos($regex, '/'))) {
+        if ('/' !== $regex[0] || !($rightDelim = strrpos($regex, '/'))) {
+            throw new HTML_QuickForm2_InvalidArgumentException(
+                "Client-side regular expressions should have slashes as delimiters"
+            );
+        }
+
+        if ($pos = strpos($regex, 'u', $rightDelim)) {
             $regex = substr($regex, 0, $pos) . substr($regex, $pos + 1);
             $regex = preg_replace('/(?<!\\\\)(?>\\\\\\\\)*\\\\x{([a-fA-F0-9]+)}/', '\\u$1', $regex);
         }
 
-        return "function() { var value = " . $this->owner->getJavascriptValue() .
-               "; return qf.rules.empty(value) || {$regex}.test(value); }";
+        return $regex;
     }
 }
 ?>

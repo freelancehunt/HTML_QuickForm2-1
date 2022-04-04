@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -54,9 +54,11 @@ class HTML_QuickForm2_Rule_Empty extends HTML_QuickForm2_Rule
         if ($this->owner instanceof HTML_QuickForm2_Element_InputFile) {
             return isset($value['error']) && UPLOAD_ERR_NO_FILE == $value['error'];
         } elseif (is_array($value)) {
-            return 0 == count(array_filter($value, 'strlen'));
+            return 0 === count(array_filter($value, function ($v) {
+                return '' !== (string)$v;
+            }));
         } else {
-            return 0 == strlen($value);
+            return '' === (string)$value;
         }
     }
 

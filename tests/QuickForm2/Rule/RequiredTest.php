@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,10 +22,12 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Rule_Required class
  */
-class HTML_QuickForm2_Rule_RequiredTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Rule_RequiredTest extends TestCase
 {
     protected $nodeAbstractMethods = [
         'updateValue', 'getId', 'getName', 'getType', 'getRawValue', 'setId',
@@ -56,11 +58,11 @@ class HTML_QuickForm2_Rule_RequiredTest extends PHPUnit_Framework_TestCase
         try {
             $rule->and_(new HTML_QuickForm2_Rule_Required($mockNode, 'element is required'));
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/Cannot add a "required" rule/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/Cannot add a "required" rule/', $e->getMessage());
             try {
                 $rule->or_(new HTML_QuickForm2_Rule_Required($mockNode, 'element is required'));
             } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-                $this->assertRegexp('/Cannot add a "required" rule/', $e->getMessage());
+                $this->assertMatchesRegularExpression('/Cannot add a "required" rule/', $e->getMessage());
                 return;
             }
         }
@@ -81,7 +83,7 @@ class HTML_QuickForm2_Rule_RequiredTest extends PHPUnit_Framework_TestCase
                     ->getMock()
             );
         } catch (HTML_QuickForm2_Exception $e) {
-            $this->assertRegexp('/Cannot add a rule to "required" rule/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/Cannot add a rule to "required" rule/', $e->getMessage());
             return;
         }
         $this->fail('Expected HTML_QuickForm2_Exception was not thrown');
@@ -89,14 +91,15 @@ class HTML_QuickForm2_Rule_RequiredTest extends PHPUnit_Framework_TestCase
 
    /**
     * @link http://pear.php.net/bugs/18133
-    * @expectedException HTML_QuickForm2_InvalidArgumentException
     */
     public function testCannotHaveEmptyMessage()
     {
+        $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
+
         $mockNode = $this->getMockBuilder('HTML_QuickForm2_Node')
             ->setMethods($this->nodeAbstractMethods)
             ->getMock();
-        $required = new HTML_QuickForm2_Rule_Required($mockNode);
+        new HTML_QuickForm2_Rule_Required($mockNode);
     }
 }
 ?>

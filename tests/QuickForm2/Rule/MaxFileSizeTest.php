@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,10 +22,12 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Rule_MaxFileSize class
  */
-class HTML_QuickForm2_Rule_MaxFileSizeTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Rule_MaxFileSizeTest extends TestCase
 {
     public function testPositiveSizeLimitIsRequired()
     {
@@ -34,13 +36,13 @@ class HTML_QuickForm2_Rule_MaxFileSizeTest extends PHPUnit_Framework_TestCase
             $maxSize = new HTML_QuickForm2_Rule_MaxFileSize($file, 'an error');
             $this->fail('The expected HTML_QuickForm2_InvalidArgumentException was not thrown');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/MaxFileSize Rule requires a positive size limit/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/MaxFileSize Rule requires a positive size limit/', $e->getMessage());
         }
         try {
             $maxSizeNegative = new HTML_QuickForm2_Rule_MaxFileSize($file, 'an error', -10);
             $this->fail('The expected HTML_QuickForm2_InvalidArgumentException was not thrown');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/MaxFileSize Rule requires a positive size limit/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/MaxFileSize Rule requires a positive size limit/', $e->getMessage());
         }
     }
 
@@ -53,7 +55,7 @@ class HTML_QuickForm2_Rule_MaxFileSizeTest extends PHPUnit_Framework_TestCase
         try {
             $maxSize = new HTML_QuickForm2_Rule_MaxFileSize($mockEl, 'an error', 1024);
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/MaxFileSize Rule can only validate file upload fields/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/MaxFileSize Rule can only validate file upload fields/', $e->getMessage());
             return;
         }
         $this->fail('The expected HTML_QuickForm2_InvalidArgumentException was not thrown');

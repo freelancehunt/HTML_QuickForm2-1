@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,10 +22,12 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Element_InputCheckable class
  */
-class HTML_QuickForm2_Element_InputCheckableTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Element_InputCheckableTest extends TestCase
 {
     public function testConstructorSetsContent()
     {
@@ -38,17 +40,17 @@ class HTML_QuickForm2_Element_InputCheckableTest extends PHPUnit_Framework_TestC
         $checkable = new HTML_QuickForm2_Element_InputCheckable(
             'foo', ['id' => 'checkableFoo'], ['content' => 'I am foo']
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '!<label\\s+for="checkableFoo">I am foo</label>!',
             $checkable->__toString()
         );
 
         $checkable->toggleFrozen(true);
-        $this->assertNotRegExp('!<label!', $checkable->__toString());
+        $this->assertDoesNotMatchRegularExpression('!<label!', $checkable->__toString());
 
         $checkable->toggleFrozen(false);
         $this->assertSame($checkable, $checkable->setContent(''));
-        $this->assertNotRegExp('!<label!', $checkable->__toString());
+        $this->assertDoesNotMatchRegularExpression('!<label!', $checkable->__toString());
     }
 
     public function testEmptyContentRendering()
@@ -56,7 +58,7 @@ class HTML_QuickForm2_Element_InputCheckableTest extends PHPUnit_Framework_TestC
         $checkable = new HTML_QuickForm2_Element_InputCheckable(
             'foo1', ['id' => 'checkableFoo1']
         );
-        $this->assertNotRegExp('!<label!', $checkable->__toString());
+        $this->assertDoesNotMatchRegularExpression('!<label!', $checkable->__toString());
     }
 
     public function testSetAndGetValue()
@@ -97,10 +99,10 @@ class HTML_QuickForm2_Element_InputCheckableTest extends PHPUnit_Framework_TestC
         $checkable->setAttribute('checked');
 
         $checkable->toggleFrozen(true);
-        $this->assertRegExp('!<input[^>]*type="hidden"[^>]*/>!', $checkable->__toString());
+        $this->assertMatchesRegularExpression('!<input[^>]*type="hidden"[^>]*/>!', $checkable->__toString());
 
         $checkable->removeAttribute('checked');
-        $this->assertNotRegExp('!<input!', $checkable->__toString());
+        $this->assertDoesNotMatchRegularExpression('!<input!', $checkable->__toString());
     }
 
     public function testBug15708()
@@ -112,7 +114,7 @@ class HTML_QuickForm2_Element_InputCheckableTest extends PHPUnit_Framework_TestC
         $aRadio = $form->appendChild(
                             new HTML_QuickForm2_Element_InputCheckable('aRadio')
                       )->setAttribute('value', 1);
-        $this->assertContains('checked', $aRadio->__toString());
+        $this->assertStringContainsString('checked', $aRadio->__toString());
     }
 
 }

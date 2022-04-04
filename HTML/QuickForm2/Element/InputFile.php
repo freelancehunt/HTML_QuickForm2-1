@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -39,13 +39,13 @@ class HTML_QuickForm2_Element_InputFile extends HTML_QuickForm2_Element_Input
 {
    /**
     * Language to display error messages in
-    * @var  string
+    * @var  string|null
     */
     protected $language = null;
 
    /**
     * Information on uploaded file, from submit data source
-    * @var array
+    * @var array|null
     */
     protected $value = null;
 
@@ -53,7 +53,7 @@ class HTML_QuickForm2_Element_InputFile extends HTML_QuickForm2_Element_Input
 
    /**
     * Message provider for upload error messages
-    * @var  callback|HTML_QuickForm2_MessageProvider
+    * @var  callable|HTML_QuickForm2_MessageProvider
     */
     protected $messageProvider;
 
@@ -170,7 +170,7 @@ class HTML_QuickForm2_Element_InputFile extends HTML_QuickForm2_Element_Input
 
         foreach ($this->getDataSources() as $ds) {
             if ($ds instanceof HTML_QuickForm2_DataSource_Submit) {
-                $value = $ds->getUpload($this->getName());
+                $value = $ds->getUpload((string)$this->getName());
                 if (null !== $value) {
                     $this->value = $value;
                     return;
@@ -192,12 +192,13 @@ class HTML_QuickForm2_Element_InputFile extends HTML_QuickForm2_Element_Input
     */
     protected function validate()
     {
-        if (strlen($this->error)) {
+        if ('' !== $this->error) {
             return false;
         }
         if (isset($this->value['error'])
             && !in_array($this->value['error'], [UPLOAD_ERR_OK, UPLOAD_ERR_NO_FILE])
         ) {
+            /** @var string $errorMessage */
             $errorMessage = $this->messageProvider instanceof HTML_QuickForm2_MessageProvider
                             ? $this->messageProvider->get(['file', $this->value['error']], $this->language)
                             : call_user_func($this->messageProvider, ['file', $this->value['error']], $this->language);

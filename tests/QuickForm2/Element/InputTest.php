@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,27 +22,18 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
-/**
- * We need to set the element's type
- */
-class HTML_QuickForm2_Element_InputImpl extends HTML_QuickForm2_Element_Input
-{
-    public function __construct($name = null, $attributes = null, array $data = [])
-    {
-        parent::__construct($name, $attributes, $data);
-        $this->attributes['type'] = 'concrete';
-    }
-}
+// pear-package-only require_once __DIR__ . '/../../stubs/InputImpl.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Unit test for HTML_QuickForm2_Element_Input class
  */
-class HTML_QuickForm2_Element_InputTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Element_InputTest extends TestCase
 {
     public function testTypeAttributeIsReadonly()
     {
-        $obj = new HTML_QuickForm2_Element_InputImpl();
+        $obj = new InputImpl();
         try {
             $obj->removeAttribute('type');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
@@ -59,7 +50,7 @@ class HTML_QuickForm2_Element_InputTest extends PHPUnit_Framework_TestCase
 
     public function testCanSetAndGetValue()
     {
-        $obj = new HTML_QuickForm2_Element_InputImpl();
+        $obj = new InputImpl();
 
         $this->assertSame($obj, $obj->setValue('foo'));
         $this->assertEquals($obj->getValue(), 'foo');
@@ -73,7 +64,7 @@ class HTML_QuickForm2_Element_InputTest extends PHPUnit_Framework_TestCase
 
     public function testSetNullValue()
     {
-        $obj = new HTML_QuickForm2_Element_InputImpl();
+        $obj = new InputImpl();
         $obj->setValue(null);
 
         $this->assertEquals('', $obj->getValue());
@@ -81,26 +72,26 @@ class HTML_QuickForm2_Element_InputTest extends PHPUnit_Framework_TestCase
 
     public function testHtmlGeneration()
     {
-        $obj = new HTML_QuickForm2_Element_InputImpl();
-        $this->assertRegExp('!<input[^>]*type="concrete"[^>]*/>!', $obj->__toString());
+        $obj = new InputImpl();
+        $this->assertMatchesRegularExpression('!<input[^>]*type="concrete"[^>]*/>!', $obj->__toString());
     }
 
     public function testFrozenHtmlGeneration()
     {
-        $obj = new HTML_QuickForm2_Element_InputImpl('test');
+        $obj = new InputImpl('test');
         $obj->setValue('bar');
         $obj->toggleFrozen(true);
 
         $obj->persistentFreeze(false);
-        $this->assertNotRegExp('/[<>]/', $obj->__toString());
-        $this->assertRegExp('/bar/', $obj->__toString());
+        $this->assertDoesNotMatchRegularExpression('/[<>]/', $obj->__toString());
+        $this->assertMatchesRegularExpression('/bar/', $obj->__toString());
 
         $obj->persistentFreeze(true);
-        $this->assertRegExp('!<input[^>]*type="hidden"[^>]*/>!', $obj->__toString());
+        $this->assertMatchesRegularExpression('!<input[^>]*type="hidden"[^>]*/>!', $obj->__toString());
 
         $obj->setAttribute('disabled');
-        $this->assertRegExp('/bar/', $obj->__toString());
-        $this->assertNotRegExp('!<input[^>]*type="hidden"[^>]*/>!', $obj->__toString());
+        $this->assertMatchesRegularExpression('/bar/', $obj->__toString());
+        $this->assertDoesNotMatchRegularExpression('!<input[^>]*type="hidden"[^>]*/>!', $obj->__toString());
     }
 }
 ?>

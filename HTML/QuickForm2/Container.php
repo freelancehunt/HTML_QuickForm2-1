@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -65,7 +65,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
 {
    /**
     * Array of elements contained in this container
-    * @var array
+    * @var HTML_QuickForm2_Node[]
     */
     protected $elements = [];
 
@@ -208,7 +208,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
    /**
     * Returns an array of this container's elements
     *
-    * @return   array   Container elements
+    * @return HTML_QuickForm2_Node[] Container elements
     */
     public function getElements()
     {
@@ -322,7 +322,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
     *
     * @param string $name Element name to search for
     *
-    * @return   array
+    * @return HTML_QuickForm2_Node[]
     */
     public function getElementsByName($name)
     {
@@ -367,6 +367,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
         );
     }
 
+    #[ReturnTypeWillChange]
    /**
     * Returns a recursive iterator for the container elements
     *
@@ -391,6 +392,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
         );
     }
 
+    #[ReturnTypeWillChange]
    /**
     * Returns the number of elements in the container
     *
@@ -433,7 +435,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
         // on contained elements, see HTML_QuickForm2Test::testFormRule()
         if ($valid) {
             foreach ($this->getRecursiveIterator() as $item) {
-                if (0 < strlen($item->getError())) {
+                if ('' !== (string)$item->getError()) {
                     return false;
                 }
             }
@@ -492,6 +494,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
     {
         // pear-package-only HTML_QuickForm2_Loader::loadClass('HTML_QuickForm2_Renderer');
 
+        /** @var HTML_QuickForm2_Renderer_Default $renderer */
         $renderer = $this->render(HTML_QuickForm2_Renderer::factory('default'));
         return $renderer->__toString()
                . $renderer->getJavascriptBuilder()->getSetupCode(null, true);

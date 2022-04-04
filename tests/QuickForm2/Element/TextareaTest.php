@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,16 +22,18 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Element_Textarea class
  */
-class HTML_QuickForm2_Element_TextareaTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Element_TextareaTest extends TestCase
 {
     public function testTextareaIsEmptyByDefault()
     {
         $area = new HTML_QuickForm2_Element_Textarea();
         $this->assertNull($area->getValue());
-        $this->assertRegExp('!\\s*<textarea[^>]*></textarea>\\s*!', $area->__toString());
+        $this->assertMatchesRegularExpression('!\\s*<textarea[^>]*></textarea>\\s*!', $area->__toString());
     }
 
     public function testSetAndGetValue()
@@ -39,21 +41,21 @@ class HTML_QuickForm2_Element_TextareaTest extends PHPUnit_Framework_TestCase
         $area = new HTML_QuickForm2_Element_Textarea();
         $this->assertSame($area, $area->setValue('Some string'));
         $this->assertEquals('Some string', $area->getValue());
-        $this->assertRegExp('!\\s*<textarea[^>]*>Some string</textarea>\\s*!', $area->__toString());
+        $this->assertMatchesRegularExpression('!\\s*<textarea[^>]*>Some string</textarea>\\s*!', $area->__toString());
 
         $area->setAttribute('disabled');
         $this->assertNull($area->getValue());
-        $this->assertRegExp('!\\s*<textarea[^>]*>Some string</textarea>\\s*!', $area->__toString());
+        $this->assertMatchesRegularExpression('!\\s*<textarea[^>]*>Some string</textarea>\\s*!', $area->__toString());
     }
 
     public function testValueOutputIsEscaped()
     {
         $area = new HTML_QuickForm2_Element_Textarea();
         $area->setValue('<foo>');
-        $this->assertNotRegExp('/<foo>/', $area->__toString());
+        $this->assertDoesNotMatchRegularExpression('/<foo>/', $area->__toString());
 
         $area->toggleFrozen(true);
-        $this->assertNotRegExp('/<foo>/', $area->__toString());
+        $this->assertDoesNotMatchRegularExpression('/<foo>/', $area->__toString());
     }
 
     public function testFrozenHtmlGeneration()
@@ -62,17 +64,17 @@ class HTML_QuickForm2_Element_TextareaTest extends PHPUnit_Framework_TestCase
         $area->setValue('Some string');
 
         $area->toggleFrozen(true);
-        $this->assertRegExp('/Some string/', $area->__toString());
-        $this->assertRegExp('!<input[^>]*type="hidden"[^>]*/>!', $area->__toString());
+        $this->assertMatchesRegularExpression('/Some string/', $area->__toString());
+        $this->assertMatchesRegularExpression('!<input[^>]*type="hidden"[^>]*/>!', $area->__toString());
 
         $area->persistentFreeze(false);
-        $this->assertRegExp('/Some string/', $area->__toString());
-        $this->assertNotRegExp('!<input[^>]*type="hidden"[^>]*/>!', $area->__toString());
+        $this->assertMatchesRegularExpression('/Some string/', $area->__toString());
+        $this->assertDoesNotMatchRegularExpression('!<input[^>]*type="hidden"[^>]*/>!', $area->__toString());
 
         $area->persistentFreeze(true);
         $area->setAttribute('disabled');
-        $this->assertRegExp('/Some string/', $area->__toString());
-        $this->assertNotRegExp('!<input[^>]*type="hidden"[^>]*/>!', $area->__toString());
+        $this->assertMatchesRegularExpression('/Some string/', $area->__toString());
+        $this->assertDoesNotMatchRegularExpression('!<input[^>]*type="hidden"[^>]*/>!', $area->__toString());
     }
 }
 ?>

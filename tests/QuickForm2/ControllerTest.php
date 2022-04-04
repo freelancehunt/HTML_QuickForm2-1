@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,11 +22,19 @@
 /** Sets up includes */
 require_once dirname(__DIR__) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Controller class
  */
-class HTML_QuickForm2_ControllerTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_ControllerTest extends TestCase
 {
+    public function set_up()
+    {
+        $_REQUEST = [];
+        $_SESSION = [];
+    }
+
     public function testSetExplicitID()
     {
         $controller = new HTML_QuickForm2_Controller('foo', false, false);
@@ -61,8 +69,6 @@ class HTML_QuickForm2_ControllerTest extends PHPUnit_Framework_TestCase
 
     public function testContainer()
     {
-        $_SESSION = [];
-
         $controller = new HTML_QuickForm2_Controller('foo');
         $container  = $controller->getSessionContainer();
         $this->assertNotEquals([], $_SESSION);

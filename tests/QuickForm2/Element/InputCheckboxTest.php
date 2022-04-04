@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,12 +22,14 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Element_InputCheckbox class
  */
-class HTML_QuickForm2_Element_InputCheckboxTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Element_InputCheckboxTest extends TestCase
 {
-    public function setUp()
+    protected function set_up()
     {
         $_POST = [
             'box1'      => '1',
@@ -86,6 +88,7 @@ class HTML_QuickForm2_Element_InputCheckboxTest extends PHPUnit_Framework_TestCa
    /**
     * Notices were emitted when 'content' key was missing from $data
     * @see http://pear.php.net/bugs/bug.php?id=16816
+    * @doesNotPerformAssertions
     */
     public function testBug16816()
     {
@@ -104,7 +107,7 @@ class HTML_QuickForm2_Element_InputCheckboxTest extends PHPUnit_Framework_TestCa
         $box = new HTML_QuickForm2_Element_InputCheckbox(
             'testBox', ['value' => 0]
         );
-        $this->assertContains('value="0"', $box->__toString());
+        $this->assertStringContainsString('value="0"', $box->__toString());
     }
 
     /**

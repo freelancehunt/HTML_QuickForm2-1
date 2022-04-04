@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,14 +22,14 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
-class HTML_QuickForm2_Element_DateTest extends PHPUnit_Framework_TestCase
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
+class HTML_QuickForm2_Element_DateTest extends TestCase
 {
-   /**
-    * @expectedException HTML_QuickForm2_InvalidArgumentException
-    */
     public function testInvalidMessageProvider()
     {
-        $invalid = new HTML_QuickForm2_Element_Date('invalid', null, ['messageProvider' => []]);
+        $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
+        new HTML_QuickForm2_Element_Date('invalid', null, ['messageProvider' => []]);
     }
 
     public static function callbackMessageProvider($messageId, $langId)
@@ -43,7 +43,7 @@ class HTML_QuickForm2_Element_DateTest extends PHPUnit_Framework_TestCase
             'format'          => 'l',
             'messageProvider' => [__CLASS__, 'callbackMessageProvider']
         ]);
-        $this->assertContains('<option value="6">Caturday</option>', $date->__toString());
+        $this->assertStringContainsString('<option value="6">Caturday</option>', $date->__toString());
     }
 
     public function testObjectMessageProvider()
@@ -57,7 +57,7 @@ class HTML_QuickForm2_Element_DateTest extends PHPUnit_Framework_TestCase
             'format'          => 'l',
             'messageProvider' => $mockProvider
         ]);
-        $this->assertContains('<option value="6">Caturday</option>', $date->__toString());
+        $this->assertStringContainsString('<option value="6">Caturday</option>', $date->__toString());
     }
 
    /**
@@ -69,11 +69,11 @@ class HTML_QuickForm2_Element_DateTest extends PHPUnit_Framework_TestCase
         $date = new HTML_QuickForm2_Element_Date('MaxMinHour', null, [
             'format' => 'H', 'minHour' => 22, 'maxHour' => 6
         ]);
-        $this->assertRegexp(
+        $this->assertMatchesRegularExpression(
             '!<option value="22">22</option>.+<option value="6">06</option>!is',
             $date->__toString()
         );
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             '<option value="5">05</option>',
             $date->__toString()
         );
@@ -88,8 +88,8 @@ class HTML_QuickForm2_Element_DateTest extends PHPUnit_Framework_TestCase
         $date = new HTML_QuickForm2_Element_Date('MaxMinMonth', null, [
             'format' => 'F', 'minMonth' => 10, 'maxMonth' => 3
         ]);
-        $this->assertRegexp('!October.+March!is', $date->__toString());
-        $this->assertNotContains('January', $date->__toString());
+        $this->assertMatchesRegularExpression('!October.+March!is', $date->__toString());
+        $this->assertStringNotContainsString('January', $date->__toString());
     }
 
     public function testSetValueAcceptsDateTime()

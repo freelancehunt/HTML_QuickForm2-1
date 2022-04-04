@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,12 +22,14 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Element_Select class
  */
-class HTML_QuickForm2_Element_ScriptTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Element_ScriptTest extends TestCase
 {
-    public function setUp()
+    protected function set_up()
     {
         HTML_Common2::setOption(HTML_QuickForm2_Node::OPTION_NONCE, null);
     }
@@ -38,13 +40,13 @@ class HTML_QuickForm2_Element_ScriptTest extends PHPUnit_Framework_TestCase
         $element->setContent('Some javascript');
 
         $script = $element->__toString();
-        $this->assertNotRegExp('/<script[^>]*nonce/', $script);
+        $this->assertDoesNotMatchRegularExpression('/<script[^>]*nonce/', $script);
 
         HTML_Common2::setOption(
             HTML_QuickForm2_Node::OPTION_NONCE,
             $nonce = base64_encode('HTML_QuickForm2_nonce' . microtime())
         );
         $script = $element->__toString();
-        $this->assertRegExp('/<script[^>]*nonce="' . $nonce . '"/', $script);
+        $this->assertMatchesRegularExpression('/<script[^>]*nonce="' . $nonce . '"/', $script);
     }
 }

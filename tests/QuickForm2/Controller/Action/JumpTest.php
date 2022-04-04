@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,15 +22,16 @@
 /** Sets up includes */
 require_once dirname(dirname(dirname(__DIR__))) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Controller_Action_Jump class
  */
-class HTML_QuickForm2_Controller_Action_JumpTest
-    extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Controller_Action_JumpTest extends TestCase
 {
     protected $mockJump;
 
-    public function setUp()
+    protected function set_up()
     {
         $this->mockJump = $this->getMockBuilder('HTML_QuickForm2_Controller_Action_Jump')
             ->setMethods(['doRedirect'])
@@ -123,7 +124,7 @@ class HTML_QuickForm2_Controller_Action_JumpTest
         );
         $controller->addHandler('jump', $this->mockJump);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $controller->getPage('first')->getButtonName('display'),
             $controller->getPage('second')->handle('jump')
         );
@@ -138,7 +139,7 @@ class HTML_QuickForm2_Controller_Action_JumpTest
         $noPropController = new HTML_QuickForm2_Controller('foo', true, false);
         $noPropController->addPage($noPropPage);
         $noPropController->addHandler('jump', $this->mockJump);
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             HTML_QuickForm2_Controller::KEY_ID . '=',
             $noPropPage->handle('jump')
         );
@@ -150,7 +151,7 @@ class HTML_QuickForm2_Controller_Action_JumpTest
         $propController = new HTML_QuickForm2_Controller('bar', true, true);
         $propController->addPage($propPage);
         $propController->addHandler('jump', $this->mockJump);
-        $this->assertContains(
+        $this->assertStringContainsString(
             HTML_QuickForm2_Controller::KEY_ID . '=bar',
             $propPage->handle('jump')
         );
@@ -207,7 +208,7 @@ class HTML_QuickForm2_Controller_Action_JumpTest
         $controller->addHandler('jump', $this->mockJump);
         $mockPage->getForm()->setAttribute('action', '/foo');
 
-        $this->assertNotRegexp('/^https:/i', $mockPage->handle('jump'));
+        $this->assertDoesNotMatchRegularExpression('/^https:/i', $mockPage->handle('jump'));
     }
 
    /**

@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -44,13 +44,13 @@ class HTML_QuickForm2 extends HTML_QuickForm2_Container
 {
    /**
     * Data sources providing values for form elements
-    * @var array
+    * @var HTML_QuickForm2_DataSource[]
     */
     protected $datasources = [];
 
    /**
     * We do not allow setting "method" and "id" other than through constructor
-    * @var array
+    * @var string[]
     */
     protected $watchedAttributes = ['id', 'method'];
 
@@ -70,7 +70,7 @@ class HTML_QuickForm2 extends HTML_QuickForm2_Container
         $method      = ('GET' == strtoupper($method))? 'get': 'post';
         $trackSubmit = empty($id) ? false : $trackSubmit;
         $this->attributes = array_merge(
-            self::prepareAttributes($attributes),
+            null === $attributes ? [] : self::prepareAttributes($attributes),
             ['method' => $method]
         );
         parent::setId(empty($id) ? null : $id);
@@ -108,6 +108,18 @@ class HTML_QuickForm2 extends HTML_QuickForm2_Container
         throw new HTML_QuickForm2_InvalidArgumentException(
             "Attribute 'id' is read-only"
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Form ID is always set
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->attributes['id'];
     }
 
 
@@ -208,6 +220,52 @@ class HTML_QuickForm2 extends HTML_QuickForm2_Container
         $this->renderClientRules($renderer->getJavascriptBuilder());
         $renderer->finishForm($this);
         return $renderer;
+    }
+
+    /**
+     * Sets some options to renderer and returns form as array.
+     * http://www.google.com/codesearch/p?hl=en#X4TnDmcwdV0/trunk/yui/base/&q=HTML_QuickForm2%20lang:php
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $renderer = HTML_QuickForm2_Renderer::factory('array');
+        $renderer->setOption('required_note', _('полужирным отмечены обязательные поля'));
+        $renderer->setOption('group_errors', false);
+        $renderer->setOption('static_labels', true);
+
+        return $this->render($renderer)->toArray();
+    }
+
+    /**
+     * Return array of error messages for current validated form.
+     *
+     * @return array
+     */
+    public function errorMessages()
+    {
+        $error_messages = [];
+        # If we got form error - ignore elements errors.
+        if ($this->getError()) {
+            $error_messages[] = $this->getError();
+
+            return $error_messages;
+        }
+        foreach (new RecursiveIteratorIterator($this->getIterator()) as $elem) {
+            if (!$elem->getError()) {
+                continue;
+            }
+            $label = $elem->getData()['label'];
+            $label = is_array($label) ? $label[0] : $label;
+            if ($label) {
+                $error_messages[] = sprintf('%s: %s', $label, $elem->getError());
+            } else {
+                $error_messages[] = $elem->getError();
+            }
+        }
+
+        return $error_messages;
     }
 
     /**

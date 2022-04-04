@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -39,7 +39,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
 {
    /**
     * Name of the tag to wrap around static element's content
-    * @var string
+    * @var string|null
     */
     protected $tagName = null;
 
@@ -96,7 +96,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
     */
     protected function onAttributeChange($name, $value = null)
     {
-        if ('name' == $name && null === $value) {
+        if ('name' === $name && null === $value) {
             unset($this->attributes['name']);
         } else {
             parent::onAttributeChange($name, $value);
@@ -110,7 +110,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
     *
     * @param string|null $name
     *
-    * @return   HTML_QuickForm2_Element_Static
+    * @return   $this
     */
     public function setName($name)
     {
@@ -142,7 +142,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
    /**
     * Sets the contents of the static element
     *
-    * @param string $content Static content
+    * @param string|null $content Static content
     *
     * @return $this
     */
@@ -155,7 +155,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
    /**
     * Returns the contents of the static element
     *
-    * @return   string
+    * @return   string|null
     */
     function getContent()
     {
@@ -188,14 +188,14 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
     public function __toString()
     {
         $prefix = $this->getIndent();
-        if ($comment = $this->getComment()) {
+        if (null !== ($comment = $this->getComment())) {
             $prefix .= '<!-- ' . $comment . ' -->'
                        . self::getOption(self::OPTION_LINEBREAK) . $this->getIndent();
         }
 
         if (!$this->tagName) {
             return $prefix . $this->getContent();
-        } elseif ('' != $this->getContent()) {
+        } elseif ('' !== (string)$this->getContent()) {
             return $prefix . '<' . $this->tagName . $this->getAttributes(true)
                    . '>' . $this->getContent() . '</' . $this->tagName . '>';
         } else {
@@ -221,8 +221,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
     */
     protected function updateValue()
     {
-        $name = $this->getName();
-        /* @var $ds HTML_QuickForm2_DataSource_NullAware */
+        $name = (string)$this->getName();
         foreach ($this->getDataSources() as $ds) {
             if (!$ds instanceof HTML_QuickForm2_DataSource_Submit
                 && (null !== ($value = $ds->getValue($name))

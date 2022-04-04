@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,26 +22,16 @@
 /** Sets up includes */
 require_once __DIR__ . '/TestHelper.php';
 
-class FormRule extends HTML_QuickForm2_Rule
-{
-    protected function validateOwner()
-    {
-        return false;
-    }
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
-    protected function setOwnerError()
-    {
-        $this->owner->getElementById('foo')->setError('an error message');
-    }
-}
-
+// pear-package-only require_once __DIR__ . '/stubs/FormRule.php';
 
 /**
  * Unit test for HTML_QuickForm2 class
  */
-class HTML_QuickForm2Test extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2Test extends TestCase
 {
-    public function setUp()
+    protected function set_up()
     {
         $_REQUEST = [
             '_qf__track' => ''
@@ -50,6 +40,7 @@ class HTML_QuickForm2Test extends PHPUnit_Framework_TestCase
             'key' => 'value'
         ];
         $_POST = [];
+        $_FILES = [];
     }
 
     public function testTrackSubmit()
@@ -94,24 +85,23 @@ class HTML_QuickForm2Test extends PHPUnit_Framework_TestCase
         $this->assertEquals('/foobar.php', $form2->getAttribute('action'));
     }
 
-    public function testIdAndMethodAreReadonly()
+    public function testIdAttributeIsReadOnly()
+    {
+        $form = new HTML_QuickForm2('foo', 'get');
+        try {
+            $form->removeAttribute('id');
+        } catch (\HTML_QuickForm2_InvalidArgumentException $e) {
+            $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
+            $form->setId('newId');
+        }
+    }
+
+    public function testMethodAttributeIsReadOnly()
     {
         $form = new HTML_QuickForm2('foo', 'get');
 
-        try {
-            $form->removeAttribute('id');
-        } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            try {
-                $form->setAttribute('method', 'post');
-            } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-                try {
-                    $form->setId('newId');
-                } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-                    return;
-                }
-            }
-        }
-        $this->fail('Expected HTML_QuickForm2_InvalidArgumentException was not thrown');
+        $this::expectException(\HTML_QuickForm2_InvalidArgumentException::class);
+        $form->setAttribute('method', 'post');
     }
 
     public function testCannotAddToContainer()
@@ -119,12 +109,8 @@ class HTML_QuickForm2Test extends PHPUnit_Framework_TestCase
         $form1 = new HTML_QuickForm2('form1');
         $form2 = new HTML_QuickForm2('form2');
 
-        try {
-            $form1->appendChild($form2);
-        } catch (HTML_QuickForm2_Exception $e) {
-            return;
-        }
-        $this->fail('Expected HTML_QuickForm2_Exception was not thrown');
+        $this::expectException(\HTML_QuickForm2_Exception::class);
+        $form1->appendChild($form2);
     }
 
     public function testSetDataSources()

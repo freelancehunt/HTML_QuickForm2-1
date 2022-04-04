@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -71,13 +71,13 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
 
     /**
      * Field used to search for available indexes
-     * @var string
+     * @var string|null
      */
     protected $indexField = null;
 
     /**
      * Available indexes
-     * @var array
+     * @var array<int|string>
      */
     protected $itemIndexes = [];
 
@@ -163,7 +163,7 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
      */
     protected function getPrototype()
     {
-        if (empty($this->elements[0])) {
+        if (empty($this->elements[0]) || !$this->elements[0] instanceof HTML_QuickForm2_Container) {
             throw new HTML_QuickForm2_NotFoundException(
                 "Repeat element needs a prototype, use setPrototype()"
             );
@@ -266,7 +266,7 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
         /* @var $child HTML_QuickForm2_Node */
         foreach ($this->getRecursiveIterator(RecursiveIteratorIterator::LEAVES_ONLY) as $child) {
             $name = $child->getName();
-            if (false === ($pos = strpos($name, '[' . self::INDEX_KEY . ']'))
+            if (false === ($pos = strpos((string)$name, '[' . self::INDEX_KEY . ']'))
                 || $child->getAttribute('disabled')
             ) {
                 continue;
@@ -293,7 +293,7 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
     /**
      * Returns the indexes for repeated items
      *
-     * @return array
+     * @return array<int|string>
      */
     public function getIndexes()
     {
@@ -383,10 +383,10 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
             $name = $child->getName();
             // checkboxes and radios can have index inside "value" attribute instead,
             // group names should not be touched
-            if (strlen($name) && false === strpos($name, self::INDEX_KEY)
+            if ('' !== (string)$name && false === strpos($name, self::INDEX_KEY)
                 && (!$child instanceof HTML_QuickForm2_Container || !$child->prependsName())
                 && (!$child instanceof HTML_QuickForm2_Element_InputCheckable
-                    || false === strpos($child->getAttribute('value'), self::INDEX_KEY))
+                    || false === strpos((string)$child->getAttribute('value'), self::INDEX_KEY))
             ) {
                 $child->setName($name . '[' . self::INDEX_KEY . ']');
             }
@@ -443,7 +443,7 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
             if (array_key_exists('value', $backup[$key])) {
                 $child->setValue($backup[$key]['value']);
             }
-            if (false !== strpos($backup[$key]['name'], self::INDEX_KEY)) {
+            if (false !== strpos((string)$backup[$key]['name'], self::INDEX_KEY)) {
                 $child->setName($backup[$key]['name']);
             }
             if ($child instanceof HTML_QuickForm2_Element_InputCheckable
@@ -465,8 +465,8 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
     /**
      * Replaces a template in elements' attributes by a numeric index
      *
-     * @param int   $index  numeric index
-     * @param array $backup backup array, contains attributes with templates
+     * @param string $index  numeric index
+     * @param array  $backup backup array, contains attributes with templates
      *
      * @see backupChildAttributes()
      */
@@ -476,7 +476,7 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
         $key = 0;
         /* @var HTML_QuickForm2_Node $child */
         foreach ($this->getRecursiveIterator() as $child) {
-            if (false !== strpos($backup[$key]['name'], self::INDEX_KEY)) {
+            if (false !== strpos((string)$backup[$key]['name'], self::INDEX_KEY)) {
                 $child->setName(str_replace(self::INDEX_KEY, $index, $backup[$key]['name']));
             }
             if ($child instanceof HTML_QuickForm2_Element_InputCheckable
@@ -510,7 +510,7 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
         $backup = $this->backupChildAttributes();
         $values = [];
         foreach ($this->getIndexes() as $index) {
-            $this->replaceIndexTemplates($index, $backup);
+            $this->replaceIndexTemplates((string)$index, $backup);
             if (null !== ($itemValues = parent::getChildValues($filtered))) {
                 $values = self::arrayMerge($values, $itemValues);
             }
@@ -533,25 +533,25 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
         $valid  = true;
         $this->childErrors = [];
         foreach ($this->getIndexes() as $index) {
-            $this->replaceIndexTemplates($index, $backup);
+            $this->replaceIndexTemplates((string)$index, $backup);
             $valid = $this->getPrototype()->validate() && $valid;
             /* @var HTML_QuickForm2_Node $child */
             foreach ($this->getRecursiveIterator() as $child) {
-                if (strlen($error = $child->getError())) {
+                if ('' !== ($error = $child->getError())) {
                     $this->childErrors[spl_object_hash($child)][$index] = $error;
                 }
             }
         }
         $this->restoreChildAttributes($backup);
         foreach ($this->rules as $rule) {
-            if (strlen($this->error)) {
+            if ('' !== $this->error) {
                 break;
             }
-            if ($rule[1] & HTML_QuickForm2_Rule::SERVER) {
+            if (0 !== ($rule[1] & HTML_QuickForm2_Rule::SERVER)) {
                 $rule[0]->validate();
             }
         }
-        return !strlen($this->error) && $valid;
+        return '' === $this->error && $valid;
     }
 
     /**
@@ -640,7 +640,7 @@ class HTML_QuickForm2_Container_Repeat extends HTML_QuickForm2_Container
 
         // next, render all available rows
         foreach ($this->getIndexes() as $index) {
-            $this->replaceIndexTemplates($index, $backup);
+            $this->replaceIndexTemplates((string)$index, $backup);
             /* @var HTML_QuickForm2_Node $child */
             foreach ($this->getRecursiveIterator() as $child) {
                 if (isset($this->childErrors[$hash = spl_object_hash($child)])

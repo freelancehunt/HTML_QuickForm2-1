@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -75,7 +75,7 @@ abstract class HTML_QuickForm2_Rule
     * An error message to display if validation fails
     * @var  string
     */
-    protected $message;
+    protected $message = '';
 
    /**
     * Configuration data for the rule
@@ -90,7 +90,7 @@ abstract class HTML_QuickForm2_Rule
     * array represents a disjunction of conjunctive clauses represented by inner
     * arrays.
     *
-    * @var  array
+    * @var  array<int, array<int, HTML_QuickForm2_Rule>>
     */
     protected $chainedRules = [[]];
 
@@ -163,7 +163,7 @@ abstract class HTML_QuickForm2_Rule
     public function setMessage($message)
     {
         if ($this->owner instanceof HTML_QuickForm2_Element_InputHidden
-            && strlen($message)
+            && '' !== (string)$message
         ) {
             throw new HTML_QuickForm2_InvalidArgumentException(
                 "Hidden elements cannot have validation errors"
@@ -204,7 +204,7 @@ abstract class HTML_QuickForm2_Rule
             );
         }
         if ($owner instanceof HTML_QuickForm2_Element_InputHidden
-            && strlen($this->getMessage())
+            && '' !== $this->getMessage()
         ) {
             throw new HTML_QuickForm2_InvalidArgumentException(
                 "Hidden elements cannot have validation errors"
@@ -283,7 +283,8 @@ abstract class HTML_QuickForm2_Rule
                     break;
                 }
             }
-            if ($globalValid = $globalValid || $localValid) {
+            if ($localValid) {
+                $globalValid = true;
                 break;
             }
             $localValid = true;
@@ -304,7 +305,7 @@ abstract class HTML_QuickForm2_Rule
     */
     protected function setOwnerError()
     {
-        if (strlen($this->getMessage()) && !$this->owner->getError()) {
+        if ('' !== $this->getMessage() && !$this->owner->getError()) {
             $this->owner->setError($this->getMessage());
         }
     }

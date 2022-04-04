@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -51,17 +51,17 @@ abstract class HTML_QuickForm2_Controller_Page
     * The form wrapped by this page
     * @var  HTML_QuickForm2
     */
-    protected $form = null;
+    protected $form;
 
    /**
     * Controller this page belongs to
     * @var  HTML_QuickForm2_Controller
     */
-    protected $controller = null;
+    protected $controller;
 
    /**
     * Contains the mapping of action names to handlers (objects implementing HTML_QuickForm2_Controller_Action)
-    * @var  array
+    * @var  array<string, HTML_QuickForm2_Controller_Action>
     */
     protected $handlers = [];
 
@@ -166,30 +166,29 @@ abstract class HTML_QuickForm2_Controller_Page
     ) {
         // pear-package-only require_once 'HTML/QuickForm2/Controller/DefaultAction.php';
 
-        if (0 == count($this->form)) {
-            $image = $this->form->appendChild(
-                new HTML_QuickForm2_Controller_DefaultAction(
-                    $this->getButtonName($actionName), ['src' => $imageSrc]
-                )
-            );
-
-        // replace the existing DefaultAction
-        } elseif ($image = $this->form->getElementById('qf:default-action')) {
+        if ($image = $this->form->getElementById('qf:default-action')) {
+            // replace the existing DefaultAction
+            /** @var HTML_QuickForm2_Controller_DefaultAction $image */
             $image->setName($this->getButtonName($actionName))
                 ->setAttribute('src', $imageSrc);
 
-        // Inject the element to the first position to improve chances that
-        // it ends up on top in the output
         } else {
-            $it = $this->form->getIterator();
-            $it->rewind();
-            $image = $this->form->insertBefore(
-                new HTML_QuickForm2_Controller_DefaultAction(
-                    $this->getButtonName($actionName), ['src' => $imageSrc]
-                ),
-                $it->current()
+            $image = new HTML_QuickForm2_Controller_DefaultAction(
+                $this->getButtonName($actionName),
+                ['src' => $imageSrc]
             );
+
+            if (0 === count($this->form)) {
+                $this->form->appendChild($image);
+            } else {
+                // Inject the element to the first position to improve chances that
+                // it ends up on top in the output
+                $it = $this->form->getIterator();
+                $it->rewind();
+                $this->form->insertBefore($image, $it->current());
+            }
         }
+
         return $image;
     }
 
@@ -238,7 +237,7 @@ abstract class HTML_QuickForm2_Controller_Page
         if ($validate) {
             $container->storeValidationStatus($id, $this->form->validate());
         }
-        return $container->getValidationStatus($id);
+        return (bool)$container->getValidationStatus($id);
     }
 }
 ?>

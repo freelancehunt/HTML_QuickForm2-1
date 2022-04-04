@@ -15,7 +15,7 @@
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
  * @author    Thomas Schulz <ths@4bconsult.de>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -129,7 +129,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
 
    /**
     * Additional style information for elements
-    * @var array
+    * @var array<string, string>
     */
     public $styles = [];
 
@@ -186,7 +186,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
     public function buildCommonFields(HTML_QuickForm2_Node $element)
     {
         $ary = [
-            'id'                 => $element->getId(),
+            'id'                 => (string) $element->getId(),
             'frozen'             => $element->toggleFrozen(),
             'element-attributes' => $element->getAttributes(),
         ];
@@ -351,6 +351,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
 
     public function startGroup(HTML_QuickForm2_Node $group)
     {
+        /** @var HTML_QuickForm2_Container_Group $group */
         $ary = $this->buildCommonContainerFields($group) + [
             'required' => $group->isRequired(),
             'type'     => $group->getType(),

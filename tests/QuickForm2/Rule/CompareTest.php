@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -22,10 +22,12 @@
 /** Sets up includes */
 require_once dirname(dirname(__DIR__)) . '/TestHelper.php';
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
 /**
  * Unit test for HTML_QuickForm2_Rule_Compare class
  */
-class HTML_QuickForm2_Rule_CompareTest extends PHPUnit_Framework_TestCase
+class HTML_QuickForm2_Rule_CompareTest extends TestCase
 {
     public function testOperandRequired()
     {
@@ -37,13 +39,13 @@ class HTML_QuickForm2_Rule_CompareTest extends PHPUnit_Framework_TestCase
             $compare = new HTML_QuickForm2_Rule_Compare($mockEl, 'some error');
             $this->fail('Expected HTML_QuickForm2_InvalidArgumentException was not thrown');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/Compare Rule requires an argument to compare with/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/Compare Rule requires an argument to compare with/', $e->getMessage());
         }
         try {
             $compare2 = new HTML_QuickForm2_Rule_Compare($mockEl, 'some error', []);
             $this->fail('Expected HTML_QuickForm2_InvalidArgumentException was not thrown');
         } catch (HTML_QuickForm2_InvalidArgumentException $e2) {
-            $this->assertRegexp('/Compare Rule requires an argument to compare with/', $e2->getMessage(), 'Wrong exception');
+            $this->assertMatchesRegularExpression('/Compare Rule requires an argument to compare with/', $e2->getMessage(), 'Wrong exception');
         }
     }
 
@@ -93,7 +95,7 @@ class HTML_QuickForm2_Rule_CompareTest extends PHPUnit_Framework_TestCase
             $bogus = new HTML_QuickForm2_Rule_Compare($mockEl, 'bogus error', ['foo', 'bar']);
             $this->fail('Expected HTML_QuickForm2_InvalidArgumentException was not thrown');
         } catch (HTML_QuickForm2_InvalidArgumentException $e) {
-            $this->assertRegexp('/Compare Rule requires a valid comparison operator/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/Compare Rule requires a valid comparison operator/', $e->getMessage());
         }
     }
 
@@ -198,7 +200,7 @@ class HTML_QuickForm2_Rule_CompareTest extends PHPUnit_Framework_TestCase
             ->setConstructorArgs(['bar', ['id' => 'bar']])
             ->getMock();
         $compare = new HTML_QuickForm2_Rule_Compare($foo, '...', $bar);
-        $this->assertContains('["foo","bar"]', $compare->getJavascript());
+        $this->assertStringContainsString('["foo","bar"]', $compare->getJavascript());
     }
 }
 ?>

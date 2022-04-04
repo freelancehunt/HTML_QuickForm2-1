@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -69,9 +69,11 @@ class HTML_QuickForm2_Rule_Nonempty extends HTML_QuickForm2_Rule
         if ($this->owner instanceof HTML_QuickForm2_Element_InputFile) {
             return isset($value['error']) && (UPLOAD_ERR_OK == $value['error']);
         } elseif (is_array($value)) {
-            return count(array_filter($value, 'strlen')) >= $this->getConfig();
+            return count(array_filter($value, function ($v) {
+                return '' !== (string)$v;
+            })) >= $this->getConfig();
         } else {
-            return (bool)strlen($value);
+            return '' !== (string)$value;
         }
     }
 
@@ -83,9 +85,9 @@ class HTML_QuickForm2_Rule_Nonempty extends HTML_QuickForm2_Rule
     * considered not empty if at least one option is selected, Container will
     * be considered not empty if at least one contained element is not empty.
     *
-    * @param int $config Minimum number of nonempty values
+    * @param mixed $config Minimum number of nonempty values (integer)
     *
-    * @return   HTML_QuickForm2_Rule
+    * @return   $this
     * @throws   HTML_QuickForm2_InvalidArgumentException    if a bogus limit was provided
     */
     public function setConfig($config)

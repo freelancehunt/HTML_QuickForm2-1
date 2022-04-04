@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -311,7 +311,7 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
         if (!$this->getAttribute('multiple')) {
             parent::updateValue();
         } else {
-            $name = $this->getName();
+            $name = (string)$this->getName();
             /* @var $ds HTML_QuickForm2_DataSource_NullAware */
             foreach ($this->getDataSources() as $ds) {
                 if (null !== ($value = $ds->getValue($name))

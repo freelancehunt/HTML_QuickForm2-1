@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -41,7 +41,7 @@ class HTML_QuickForm2_Element_Textarea extends HTML_QuickForm2_Element
 
    /**
     * Value for textarea field
-    * @var  string
+    * @var  string|null
     */
     protected $value = null;
 
@@ -71,7 +71,7 @@ class HTML_QuickForm2_Element_Textarea extends HTML_QuickForm2_Element
                    . preg_replace(
                        "/(\r\n|\n|\r)/",
                        '&#010;',
-                       htmlspecialchars($this->value, ENT_QUOTES, self::getOption(self::OPTION_CHARSET))
+                       htmlspecialchars((string)$this->value, ENT_QUOTES, self::getOption(self::OPTION_CHARSET))
                    )
                    . '</textarea>';
         }
@@ -79,7 +79,7 @@ class HTML_QuickForm2_Element_Textarea extends HTML_QuickForm2_Element
 
     public function getFrozenHtml()
     {
-        $value = htmlspecialchars($this->value, ENT_QUOTES, self::getOption(self::OPTION_CHARSET));
+        $value = htmlspecialchars((string)$this->value, ENT_QUOTES, self::getOption(self::OPTION_CHARSET));
         if ('off' == $this->getAttribute('wrap')) {
             $html = $this->getIndent() . '<pre>' . $value .
                     '</pre>' . self::getOption(self::OPTION_LINEBREAK);

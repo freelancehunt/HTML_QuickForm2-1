@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -63,6 +63,7 @@ class HTML_QuickForm2_Loader
         include $includeFile;
 
         // Still no class?
+        /** @psalm-suppress RedundantCondition */
         if (!class_exists($className, false) && !interface_exists($className, false)) {
             if (!self::fileExists($includeFile)) {
                 throw new HTML_QuickForm2_NotFoundException(

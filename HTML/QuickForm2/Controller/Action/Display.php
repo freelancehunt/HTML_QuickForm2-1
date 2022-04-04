@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -56,6 +56,7 @@ class HTML_QuickForm2_Controller_Action_Display
             if ($page->getController()->isWizard()
                 && !$page->getController()->isValid($page)
             ) {
+                /** @psalm-suppress PossiblyNullReference */
                 return $page->getController()->getFirstInvalidPage()->handle('jump');
             }
             // If we have values in container then we should inject the Session

@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -68,13 +68,13 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
 
    /**
     * Language code
-    * @var  string
+    * @var  string|null
     */
     protected $language = null;
 
    /**
     * Message provider for option texts
-    * @var  callback|HTML_QuickForm2_MessageProvider
+    * @var  callable|HTML_QuickForm2_MessageProvider
     */
     protected $messageProvider;
 
@@ -159,8 +159,9 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
         $separators = [];
         $separator =  '';
 
-        for ($i = 0, $length = strlen($this->data['format']); $i < $length; $i++) {
+        for ($i = 0, $length = strlen((string)$this->data['format']); $i < $length; $i++) {
             $sign = $this->data['format'][$i];
+            /** @psalm-suppress TypeDoesNotContainType */
             if ($backslash) {
                 $backslash  = false;
                 $separator .= $sign;
@@ -170,11 +171,13 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
                 switch ($sign) {
                 case 'D':
                     // Sunday is 0 like with 'w' in date()
+                    /** @var array<int, string> $options */
                     $options = $this->messageProvider instanceof HTML_QuickForm2_MessageProvider
                                ? $this->messageProvider->get(['date', 'weekdays_short'], $this->language)
                                : call_user_func($this->messageProvider, ['date', 'weekdays_short'], $this->language);
                     break;
                 case 'l':
+                    /** @var array<int, string> $options */
                     $options = $this->messageProvider instanceof HTML_QuickForm2_MessageProvider
                                ? $this->messageProvider->get(['date', 'weekdays_long'], $this->language)
                                : call_user_func($this->messageProvider, ['date', 'weekdays_long'], $this->language);
@@ -192,6 +195,7 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
                     );
                     if ('M' == $sign || 'F' == $sign) {
                         $key   = 'M' == $sign ? 'months_short' : 'months_long';
+                        /** @var array<int, string> $names */
                         $names = $this->messageProvider instanceof HTML_QuickForm2_MessageProvider
                                  ? $this->messageProvider->get(['date', $key], $this->language)
                                  : call_user_func($this->messageProvider, ['date', $key], $this->language);
@@ -202,15 +206,15 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
                     break;
                 case 'Y':
                     $options = $this->createOptionList(
-                        $this->data['minYear'],
-                        $this->data['maxYear'],
+                        (int)$this->data['minYear'],
+                        (int)$this->data['maxYear'],
                         $this->data['minYear'] > $this->data['maxYear']? -1: 1
                     );
                     break;
                 case 'y':
                     $options = $this->createOptionList(
-                        $this->data['minYear'],
-                        $this->data['maxYear'],
+                        (int)$this->data['minYear'],
+                        (int)$this->data['maxYear'],
                         $this->data['minYear'] > $this->data['maxYear']? -1: 1
                     );
                     array_walk($options, [$this, '_shortYearCallback']);
@@ -308,7 +312,7 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
     * @param int $end   The end number
     * @param int $step  Increment by this value
     *
-    * @return   array   An array of numeric options.
+    * @return   array<int, string>   An array of numeric options.
     */
     protected function createOptionList($start, $end, $step = 1)
     {
@@ -331,7 +335,7 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
             return $str;
         }
         $trimmed = ltrim($str, '0');
-        return strlen($trimmed)? $trimmed: '0';
+        return '' !== $trimmed ? $trimmed : '0';
     }
 
 
@@ -339,10 +343,11 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
     * Tries to convert the given value to a usable date before setting the
     * element value
     *
-    * @param int|string|array|DateTime $value A timestamp, a DateTime object,
-    *   a string compatible with strtotime() or an array that fits the element names
+    * @param mixed $value Actually accepts either a timestamp,
+    *   an instance of DateTimeInterface, a string compatible
+    *   with strtotime(), or an array that fits the element names
     *
-    * @return HTML_QuickForm2_Element_Date
+    * @return $this
     */
     public function setValue($value)
     {
@@ -352,15 +357,12 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
         } elseif (is_array($value)) {
             $value = array_map([$this, 'trimLeadingZeros'], $value);
 
-        } elseif (is_scalar($value)
-                  || $value instanceof DateTime
-                  || interface_exists('DateTimeInterface') && $value instanceof DateTimeInterface
-        ) {
-            if (!is_scalar($value)) {
+        } elseif (is_scalar($value) || $value instanceof DateTimeInterface) {
+            if ($value instanceof DateTimeInterface) {
                 $arr = explode('-', $value->format('w-j-n-Y-g-G-i-s-a-A-W'));
             } else {
                 if (!is_numeric($value)) {
-                    $value = strtotime($value);
+                    $value = strtotime((string)$value);
                 }
                 // might be a unix epoch, then we fill all possible values
                 $arr = explode('-', date('w-j-n-Y-g-G-i-s-a-A-W', (int)$value));
@@ -396,7 +398,6 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
     protected function updateValue()
     {
         $name = $this->getName();
-        /* @var $ds HTML_QuickForm2_DataSource_NullAware */
         foreach ($this->getDataSources() as $ds) {
             if (null !== ($value = $ds->getValue($name))
                 || $ds instanceof HTML_QuickForm2_DataSource_NullAware && $ds->hasValue($name)

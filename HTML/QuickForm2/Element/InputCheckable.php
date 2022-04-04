@@ -14,7 +14,7 @@
  * @package   HTML_QuickForm2
  * @author    Alexey Borzov <avb@php.net>
  * @author    Bertrand Mansion <golgote@mamasam.com>
- * @copyright 2006-2021 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
+ * @copyright 2006-2022 Alexey Borzov <avb@php.net>, Bertrand Mansion <golgote@mamasam.com>
  * @license   https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      https://pear.php.net/package/HTML_QuickForm2
  */
@@ -68,8 +68,9 @@ class HTML_QuickForm2_Element_InputCheckable extends HTML_QuickForm2_Element_Inp
 
     protected function onAttributeChange($name, $value = null)
     {
-        if ('value' != $name) {
-            return parent::onAttributeChange($name, $value);
+        if ('value' !== $name) {
+            parent::onAttributeChange($name, $value);
+            return;
         }
         if (null === $value) {
             unset($this->attributes['value'], $this->attributes['checked']);
@@ -127,13 +128,13 @@ class HTML_QuickForm2_Element_InputCheckable extends HTML_QuickForm2_Element_Inp
 
     public function __toString()
     {
-        if (0 == strlen($this->data['content'])) {
+        if ('' === (string)$this->data['content']) {
             $label = '';
         } elseif ($this->frozen) {
             $label = $this->data['content'];
         } else {
             $label = '<label for="' . htmlspecialchars(
-                $this->getId(), ENT_QUOTES, self::getOption(self::OPTION_CHARSET)
+                    (string)$this->getId(), ENT_QUOTES, self::getOption(self::OPTION_CHARSET)
             ) . '">' . $this->data['content'] . '</label>';
         }
         return parent::__toString() . $label;
