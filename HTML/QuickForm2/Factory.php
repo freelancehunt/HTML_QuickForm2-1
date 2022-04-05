@@ -56,10 +56,8 @@ class HTML_QuickForm2_Factory
         'image'         => [HTML_QuickForm2_Element_InputImage::class, null],
         'inputbutton'   => [HTML_QuickForm2_Element_InputButton::class, null],
         'number'        => [HTML_QuickForm2_Element_InputNumber::class, null],
-        'number'        => [HTML_QuickForm2_Element_InputNumber::class, null],
         'password'      => [HTML_QuickForm2_Element_InputPassword::class, null],
         'radio'         => [HTML_QuickForm2_Element_InputRadio::class, null],
-        'range'         => [HTML_QuickForm2_Element_InputRange::class, null],
         'range'         => [HTML_QuickForm2_Element_InputRange::class, null],
         'repeat'        => [HTML_QuickForm2_Container_Repeat::class, null],
         'reset'         => [HTML_QuickForm2_Element_InputReset::class, null],
@@ -68,10 +66,8 @@ class HTML_QuickForm2_Factory
         'static'        => [HTML_QuickForm2_Element_Static::class, null],
         'submit'        => [HTML_QuickForm2_Element_InputSubmit::class, null],
         'tel'           => [HTML_QuickForm2_Element_InputTel::class, null],
-        'tel'           => [HTML_QuickForm2_Element_InputTel::class, null],
         'text'          => [HTML_QuickForm2_Element_InputText::class, null],
         'textarea'      => [HTML_QuickForm2_Element_Textarea::class, null],
-        'url'           => [HTML_QuickForm2_Element_InputUrl::class, null],
         'url'           => [HTML_QuickForm2_Element_InputUrl::class, null]
     ];
 
@@ -105,8 +101,7 @@ class HTML_QuickForm2_Factory
             ['min' => 0]],
         'maxfilesize'    => [HTML_QuickForm2_Rule_MaxFileSize::class, null, null],
         'mimetype'       => [HTML_QuickForm2_Rule_MimeType::class, null, null],
-        'mimetypeserver' => [HTML_QuickForm2_Rule_MimeTypeServer::class, null],
-        'mimetypeserver' => [HTML_QuickForm2_Rule_MimeTypeServer::class, null],
+        'mimetypeserver' => [HTML_QuickForm2_Rule_MimeTypeServer::class, null, null],
         'each'           => [HTML_QuickForm2_Rule_Each::class, null, null],
         'notcallback'    => [HTML_QuickForm2_Rule_NotCallback::class, null, null],
         'notregex'       => [HTML_QuickForm2_Rule_NotRegex::class, null, null],
